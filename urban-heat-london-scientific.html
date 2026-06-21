@@ -1,0 +1,899 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Spatiotemporal Analysis of Urban Heat Island Intensification in Greater London — Zari Syed</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600&family=Source+Code+Pro:wght@400;500&display=swap" rel="stylesheet" />
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:        #FAFAF8;
+      --surface:   #FFFFFF;
+      --teal:      #1C5F74;
+      --teal-light:#E8F4F8;
+      --dark:      #1A2E3B;
+      --mid:       #4A5568;
+      --soft:      #8896A4;
+      --border:    #E2E8F0;
+      --serif:     'Playfair Display', Georgia, serif;
+      --sans:      'Inter', system-ui, sans-serif;
+      --mono:      'Source Code Pro', 'Courier New', monospace;
+      --radius:    10px;
+      --shadow:    0 4px 24px rgba(28,95,116,0.10);
+    }
+
+    html { scroll-behavior: smooth; font-size: 16px; }
+
+    body {
+      background: var(--bg);
+      color: var(--dark);
+      font-family: var(--sans);
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a { color: inherit; text-decoration: none; }
+    img { display: block; max-width: 100%; }
+
+    /* ── Nav ─────────────────────────────────────────────── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 5vw;
+      height: 64px;
+      background: rgba(250,250,248,0.90);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid transparent;
+      transition: border-color 0.3s, box-shadow 0.3s;
+    }
+    nav.scrolled { border-color: var(--border); box-shadow: 0 2px 12px rgba(28,95,116,0.07); }
+    .nav-name { font-family: var(--serif); font-size: 1.05rem; font-weight: 600; }
+    .nav-links { display: flex; gap: 2rem; list-style: none; }
+    .nav-links a { font-size: 0.875rem; font-weight: 500; color: var(--mid); transition: color 0.2s; }
+    .nav-links a:hover { color: var(--teal); }
+
+    /* ── Paper wrapper ───────────────────────────────────── */
+    .paper-wrapper {
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 120px 5vw 80px;
+    }
+
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.82rem;
+      font-weight: 500;
+      color: var(--soft);
+      margin-bottom: 2.5rem;
+      transition: color 0.2s;
+    }
+    .back-link:hover { color: var(--teal); }
+
+    /* ── Paper header ────────────────────────────────────── */
+    .paper-category {
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--teal);
+      margin-bottom: 1rem;
+    }
+    .paper-title {
+      font-family: var(--serif);
+      font-size: clamp(1.6rem, 3.5vw, 2.2rem);
+      font-weight: 700;
+      color: var(--dark);
+      line-height: 1.25;
+      margin-bottom: 1.5rem;
+    }
+    .paper-meta {
+      font-size: 0.88rem;
+      color: var(--mid);
+      line-height: 1.7;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      padding: 1rem 0;
+      margin-bottom: 2rem;
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 0.3rem 1.25rem;
+    }
+    .paper-meta .label {
+      font-weight: 600;
+      color: var(--dark);
+      font-size: 0.82rem;
+    }
+    .paper-meta .value { font-size: 0.82rem; color: var(--mid); }
+
+    /* ── Version switcher ────────────────────────────────── */
+    .version-switcher {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      background: var(--teal-light);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 0.75rem 1.1rem;
+      margin-bottom: 2.5rem;
+      font-size: 0.83rem;
+      color: var(--mid);
+      flex-wrap: wrap;
+    }
+    .version-switcher strong { color: var(--dark); }
+    .version-switcher a {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      color: var(--teal);
+      font-weight: 600;
+      transition: opacity 0.2s;
+    }
+    .version-switcher a:hover { opacity: 0.75; }
+
+    /* ── Abstract ────────────────────────────────────────── */
+    .abstract-box {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-left: 4px solid var(--teal);
+      border-radius: 0 var(--radius) var(--radius) 0;
+      padding: 1.5rem 1.75rem;
+      margin-bottom: 2.5rem;
+    }
+    .abstract-box h2 {
+      font-family: var(--sans);
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--teal);
+      margin-bottom: 0.75rem;
+    }
+    .abstract-box p {
+      font-size: 0.95rem;
+      color: var(--mid);
+      line-height: 1.8;
+      margin-bottom: 0.75rem;
+    }
+    .abstract-box p:last-child { margin-bottom: 0; }
+    .keywords {
+      margin-top: 1rem;
+      font-size: 0.82rem;
+      color: var(--soft);
+    }
+    .keywords strong { color: var(--dark); }
+
+    /* ── Paper body ──────────────────────────────────────── */
+    .paper-body { counter-reset: section; }
+
+    .paper-body h2 {
+      counter-increment: section;
+      font-family: var(--sans);
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--dark);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin: 2.75rem 0 0.9rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: baseline;
+      gap: 0.75rem;
+    }
+    .paper-body h2::before {
+      content: counter(section) ".";
+      color: var(--teal);
+      font-weight: 700;
+      min-width: 1.5rem;
+    }
+
+    .paper-body h3 {
+      font-family: var(--sans);
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--dark);
+      margin: 1.75rem 0 0.6rem;
+    }
+
+    .paper-body p {
+      font-size: 0.97rem;
+      color: var(--mid);
+      line-height: 1.85;
+      margin-bottom: 1rem;
+    }
+
+    .paper-body p strong { color: var(--dark); }
+
+    /* ── Equation block ──────────────────────────────────── */
+    .equation {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1rem 1.5rem;
+      margin: 1.25rem 0;
+      font-family: var(--mono);
+      font-size: 0.9rem;
+      color: var(--dark);
+      overflow-x: auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+    }
+    .eq-number {
+      font-family: var(--sans);
+      font-size: 0.8rem;
+      color: var(--soft);
+      white-space: nowrap;
+    }
+
+    /* ── Figure ──────────────────────────────────────────── */
+    .paper-figure {
+      margin: 2rem 0;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+    .paper-figure img {
+      width: 100%;
+      display: block;
+    }
+    .paper-figure figcaption {
+      padding: 0.85rem 1.25rem;
+      font-size: 0.8rem;
+      color: var(--mid);
+      line-height: 1.6;
+      border-top: 1px solid var(--border);
+    }
+    .paper-figure figcaption strong { color: var(--dark); }
+
+    /* ── Data table ──────────────────────────────────────── */
+    .paper-table-wrap {
+      margin: 1.5rem 0 0.5rem;
+      overflow-x: auto;
+    }
+    .paper-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.85rem;
+    }
+    .paper-table caption {
+      font-size: 0.8rem;
+      color: var(--mid);
+      text-align: left;
+      padding-bottom: 0.6rem;
+      font-style: italic;
+    }
+    .paper-table thead th {
+      text-align: left;
+      padding: 0.55rem 0.85rem;
+      background: var(--dark);
+      color: #fff;
+      font-weight: 600;
+      font-size: 0.78rem;
+      letter-spacing: 0.03em;
+    }
+    .paper-table thead th:first-child { border-radius: var(--radius) 0 0 0; }
+    .paper-table thead th:last-child { border-radius: 0 var(--radius) 0 0; }
+    .paper-table tbody td {
+      padding: 0.5rem 0.85rem;
+      border-bottom: 1px solid var(--border);
+      color: var(--mid);
+    }
+    .paper-table tbody tr:nth-child(even) td { background: #f7f9fb; }
+    .paper-table .row-highlight td { color: var(--dark); font-weight: 600; }
+    .paper-table .delta-high { color: #c53030; font-weight: 600; }
+    .table-note {
+      font-size: 0.78rem;
+      color: var(--soft);
+      margin-top: 0.5rem;
+      font-style: italic;
+    }
+
+    /* ── Inline stat callout ─────────────────────────────── */
+    .stat-inline {
+      display: inline-flex;
+      align-items: baseline;
+      gap: 0.3rem;
+      font-family: var(--mono);
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: var(--teal);
+      background: var(--teal-light);
+      padding: 0.1rem 0.45rem;
+      border-radius: 4px;
+    }
+
+    /* ── References ──────────────────────────────────────── */
+    .references-list {
+      list-style: none;
+      counter-reset: ref;
+    }
+    .references-list li {
+      counter-increment: ref;
+      display: flex;
+      gap: 0.75rem;
+      font-size: 0.85rem;
+      color: var(--mid);
+      line-height: 1.65;
+      margin-bottom: 0.75rem;
+    }
+    .references-list li::before {
+      content: "[" counter(ref) "]";
+      color: var(--teal);
+      font-weight: 600;
+      font-size: 0.78rem;
+      min-width: 2rem;
+      padding-top: 0.1rem;
+    }
+
+    /* ── Blog version CTA ────────────────────────────────── */
+    .blog-cta {
+      background: var(--teal);
+      border-radius: var(--radius);
+      padding: 1.75rem 2rem;
+      margin: 3rem 0;
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+    }
+    .blog-cta h3 {
+      font-family: var(--serif);
+      font-size: 1.15rem;
+      font-weight: 600;
+      color: #fff;
+    }
+    .blog-cta p { font-size: 0.88rem; color: rgba(255,255,255,0.8); margin: 0; }
+    .blog-cta-links {
+      display: flex;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+      margin-top: 0.5rem;
+    }
+    .btn-white {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      padding: 0.6rem 1.3rem;
+      background: #fff;
+      color: var(--teal);
+      border-radius: 8px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .btn-white:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
+    .btn-ghost-white {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      padding: 0.6rem 1.3rem;
+      border: 1.5px solid rgba(255,255,255,0.5);
+      color: #fff;
+      border-radius: 8px;
+      font-size: 0.85rem;
+      font-weight: 500;
+      transition: border-color 0.2s, transform 0.2s;
+    }
+    .btn-ghost-white:hover { border-color: #fff; transform: translateY(-2px); }
+
+    /* ── Footer ──────────────────────────────────────────── */
+    footer {
+      padding: 2rem 5vw;
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.8rem;
+      color: var(--soft);
+    }
+
+    @media (max-width: 768px) {
+      .paper-wrapper { padding: 100px 6vw 64px; }
+      nav { padding: 0 6vw; }
+      .equation { flex-direction: column; align-items: flex-start; gap: 0.5rem; }
+    }
+    @media (max-width: 520px) {
+      .nav-links { display: none; }
+    }
+  </style>
+</head>
+
+<body>
+
+  <nav id="navbar">
+    <a href="index.html" class="nav-name">Zari Syed</a>
+    <ul class="nav-links">
+      <li><a href="index.html#about">About</a></li>
+      <li><a href="writing.html">Writing</a></li>
+      <li><a href="index.html#technical">Technical</a></li>
+      <li><a href="index.html#contact">Contact</a></li>
+    </ul>
+  </nav>
+
+  <div class="paper-wrapper">
+
+    <a href="writing.html" class="back-link">← All writing</a>
+
+    <p class="paper-category">Remote Sensing · Climate Science</p>
+
+    <h1 class="paper-title">
+      Spatiotemporal Analysis of Urban Heat Island Intensification in Greater London
+      Using Multitemporal Landsat Imagery (2015–2023)
+    </h1>
+
+    <div class="paper-meta">
+      <span class="label">Author</span>
+      <span class="value">Zari Syed</span>
+      <span class="label">Date</span>
+      <span class="value">2025</span>
+      <span class="label">Data sources</span>
+      <span class="value">Landsat 8/9 Collection 2 Level-2 (USGS EarthExplorer); GLA Statistical Boundary Files</span>
+      <span class="label">Tools</span>
+      <span class="value">Python · rasterio · geopandas · earthpy · scipy</span>
+      <span class="label">Repository</span>
+      <span class="value"><a href="https://github.com/ao-chaos/Data_portfolio" target="_blank" rel="noopener" style="color:var(--teal); font-weight:500;">github.com/ao-chaos/Data_portfolio →</a></span>
+    </div>
+
+    <div class="version-switcher">
+      <strong>Scientific paper</strong> &nbsp;·&nbsp; Also available as a plain-language summary:
+      <a href="urban-heat-london.html">Read the accessible version →</a>
+    </div>
+
+    <!-- ── Abstract ── -->
+    <div class="abstract-box">
+      <h2>Abstract</h2>
+      <p>
+        This study investigates the intensification of the urban heat island (UHI) effect across
+        Greater London between 2015 and 2023 using multitemporal Landsat 8 and Landsat 9
+        satellite imagery. Land Surface Temperature (LST) is derived from Thermal Infrared
+        Sensor (TIRS) Band 10 data using an NDVI-based emissivity correction and the
+        generalised single-channel retrieval method of Jiménez-Muñoz and Sobrino (2003).
+        Pixel-wise change analysis (ΔLST = LST₂₀₂₃ − LST₂₀₁₅) and borough-level zonal
+        statistics are computed across all 33 administrative units of Greater London.
+        The Normalised Difference Vegetation Index (NDVI) is calculated for both epochs
+        and correlated against LST to quantify the cooling contribution of urban vegetation.
+      </p>
+      <p>
+        Results indicate a mean ΔLST of <span class="stat-inline">+1.14°C</span> across
+        Greater London over the eight-year period. The five boroughs exhibiting the greatest
+        surface warming — Tower Hamlets (<span class="stat-inline">+1.74°C</span>),
+        Lambeth (<span class="stat-inline">+1.68°C</span>), City of London
+        (<span class="stat-inline">+1.60°C</span>), Hammersmith &amp; Fulham
+        (<span class="stat-inline">+1.50°C</span>), and Richmond upon Thames
+        (<span class="stat-inline">+1.47°C</span>) — collectively represent a mix of
+        high-density commercial, inner-residential, and riverside built environments.
+        The Pearson correlation coefficient between LST and NDVI strengthened from
+        <span class="stat-inline">r = −0.762</span> in 2015 to
+        <span class="stat-inline">r = −0.801</span> in 2023 (both p &lt; 0.001),
+        consistent with progressive vegetation loss as a driver of surface heating.
+        Findings highlight the spatially uneven character of UHI intensification
+        and underscore the disproportionate heat burden concentrated in economically
+        deprived, high-density inner-London boroughs.
+      </p>
+      <p class="keywords">
+        <strong>Keywords:</strong> urban heat island; land surface temperature; Landsat;
+        remote sensing; NDVI; Greater London; climate adaptation
+      </p>
+    </div>
+
+    <div class="paper-body">
+
+      <h2>Introduction</h2>
+
+      <p>
+        The urban heat island (UHI) effect — wherein urban areas record systematically
+        higher temperatures than their rural surroundings due to modifications in surface
+        cover, anthropogenic heat release, and altered evapotranspiration regimes — is
+        among the most well-documented phenomena in urban climatology [1]. As cities
+        densify and global mean temperatures rise under anthropogenic forcing, the
+        compound risk associated with UHI intensification has become a central concern
+        for urban planners, public health authorities, and climate adaptation researchers [2].
+      </p>
+      <p>
+        Greater London presents a particularly relevant case study. With a population
+        of approximately 8.9 million (2021 Census), a built environment dominated by
+        impervious surfaces and transport infrastructure, and a history of rapid urban
+        growth since 2015, London has experienced measurable changes in land cover
+        composition that are expected to influence surface thermal regimes.
+        Despite this, high-resolution spatiotemporal characterisation of UHI change
+        at the borough level — the primary administrative unit for local planning and
+        policy — remains limited in the peer-reviewed literature.
+      </p>
+      <p>
+        Satellite-derived Land Surface Temperature (LST) offers a spatially continuous,
+        temporally repeatable, and physically consistent approach to UHI monitoring.
+        Landsat's 30-metre spatial resolution and consistent spectral calibration
+        across Landsat 8 and 9 make it well-suited for multitemporal comparison
+        at intra-urban scales [3]. This analysis employs LST derived from USGS
+        Collection 2 Level-2 Landsat products alongside NDVI-based emissivity
+        correction to characterise surface temperature change across all 33 London
+        boroughs between summer 2015 and summer 2023.
+      </p>
+      <p>
+        The primary objectives of this study are: (i) to quantify the mean and
+        spatially distributed change in LST across Greater London between 2015 and 2023;
+        (ii) to identify the boroughs experiencing the most pronounced surface warming;
+        and (iii) to examine the relationship between vegetation cover change (ΔNDVI)
+        and surface temperature change (ΔLST) at both pixel and borough levels.
+      </p>
+
+      <h2>Data &amp; Study Area</h2>
+
+      <h3>2.1 Study Area</h3>
+      <p>
+        The study area encompasses the 32 London Boroughs and the City of London,
+        administered collectively under the Greater London Authority (GLA).
+        Greater London covers approximately 1,572 km², centred at 51.51° N, 0.13° W.
+        All spatial data are projected to the British National Grid (EPSG:27700),
+        consistent with GLA boundary datasets and providing accurate metric distance
+        and area measurements for the UK context.
+      </p>
+
+      <h3>2.2 Satellite Data</h3>
+      <p>
+        Two cloud-free Landsat scenes were selected from summer acquisition windows
+        (July–August) to: (i) maximise solar irradiance and LST signal strength;
+        (ii) ensure full canopy leaf-out for NDVI comparability across epochs;
+        and (iii) align with the period of peak UHI intensity in temperate-zone
+        cities [1]. A cloud cover threshold of &lt;10% was applied using the USGS
+        EarthExplorer interface, with final cloud masking performed using the QA_PIXEL
+        band (CFMask algorithm; Foga et al., 2017 [4]).
+      </p>
+
+      <div class="paper-table-wrap">
+        <table class="paper-table">
+          <caption>Table 1. Landsat scene acquisition parameters.</caption>
+          <thead>
+            <tr>
+              <th>Parameter</th>
+              <th>2015 Scene</th>
+              <th>2023 Scene</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>Sensor</td><td>Landsat 8 OLI/TIRS</td><td>Landsat 9 OLI-2/TIRS-2</td></tr>
+            <tr><td>WRS-2 Path/Row</td><td>201 / 024</td><td>201 / 024</td></tr>
+            <tr><td>Acquisition season</td><td>July–August 2015</td><td>July–August 2023</td></tr>
+            <tr><td>Cloud cover</td><td>&lt;10%</td><td>&lt;10%</td></tr>
+            <tr><td>Collection</td><td>Collection 2, Level-2</td><td>Collection 2, Level-2</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p>
+        Landsat 8 and 9 TIRS instruments are nominally identical in spectral and
+        radiometric characteristics, enabling direct multitemporal comparison without
+        cross-sensor calibration correction beyond the standard Level-2 processing
+        applied by USGS. Minor residual inter-sensor biases at the sub-Kelvin level
+        are acknowledged as a source of uncertainty (see Section 5).
+      </p>
+
+      <h2>Methods</h2>
+
+      <h3>3.1 Land Surface Temperature Retrieval</h3>
+      <p>
+        USGS Collection 2 Level-2 ST_B10 products are delivered as scaled integers
+        representing brightness temperature (T<sub>B</sub>). Conversion to Kelvin
+        applies the published scale factor and additive offset:
+      </p>
+      <div class="equation">
+        <span>T<sub>B</sub> (K) = ST_B10 × 0.00341802 + 149.0</span>
+        <span class="eq-number">(1)</span>
+      </div>
+      <p>
+        Emissivity (ε) is estimated from fractional vegetation cover (F<sub>v</sub>)
+        following Sobrino et al. (2004) [5]. Fractional vegetation cover is derived
+        from NDVI using scene-level 2nd and 98th percentile normalisation to minimise
+        the influence of outliers:
+      </p>
+      <div class="equation">
+        <span>F<sub>v</sub> = [(NDVI − NDVI<sub>min</sub>) / (NDVI<sub>max</sub> − NDVI<sub>min</sub>)]²</span>
+        <span class="eq-number">(2)</span>
+      </div>
+      <div class="equation">
+        <span>ε = ε<sub>v</sub> · F<sub>v</sub> + ε<sub>s</sub> · (1 − F<sub>v</sub>) + C</span>
+        <span class="eq-number">(3)</span>
+      </div>
+      <p>
+        where ε<sub>v</sub> = 0.985 (full vegetation canopy), ε<sub>s</sub> = 0.960
+        (bare soil/impervious surface), and C = 0.005 (cavity effect term).
+        LST is then retrieved from T<sub>B</sub> and ε using the generalised
+        single-channel method [6]:
+      </p>
+      <div class="equation">
+        <span>LST (K) = T<sub>B</sub> / [1 + (λ · T<sub>B</sub> / ρ) · ln(ε)]</span>
+        <span class="eq-number">(4)</span>
+      </div>
+      <p>
+        where λ = 10.895 µm (effective wavelength of TIRS Band 10) and
+        ρ = h·c/σ = 1.438 × 10⁻² m·K. Final LST values are expressed in degrees
+        Celsius (LST°C = LST<sub>K</sub> − 273.15).
+      </p>
+
+      <h3>3.2 NDVI Calculation</h3>
+      <p>
+        NDVI is calculated from atmospherically corrected surface reflectance bands
+        in the Level-2 SR product, with values converted from scaled integer format
+        prior to computation (scale factor: 0.0000275; offset: −0.2):
+      </p>
+      <div class="equation">
+        <span>NDVI = (Band 5 − Band 4) / (Band 5 + Band 4)</span>
+        <span class="eq-number">(5)</span>
+      </div>
+
+      <h3>3.3 Change Analysis and Borough-Level Aggregation</h3>
+      <p>
+        Pixel-wise difference rasters are computed between co-registered 2015 and 2023
+        outputs. Where minor sub-pixel misalignment exists due to scene registration
+        differences, the 2023 raster is resampled to the 2015 grid using bilinear
+        interpolation prior to differencing:
+      </p>
+      <div class="equation">
+        <span>ΔLST = LST₂₀₂₃ − LST₂₀₁₅ &nbsp;&nbsp; ΔNDVI = NDVI₂₀₂₃ − NDVI₂₀₁₅</span>
+        <span class="eq-number">(6)</span>
+      </div>
+      <p>
+        Zonal statistics (mean LST, mean NDVI, mean ΔLST) are computed for each of the
+        33 London boroughs using rasterio masking against GLA borough boundary shapefiles.
+        Pearson's correlation coefficient (r) between pixel-level LST and NDVI is computed
+        independently for each year and assessed for statistical significance at α = 0.05.
+      </p>
+
+      <h2>Results</h2>
+
+      <h3>4.1 LST Change Across Greater London</h3>
+      <p>
+        Mean LST across Greater London increased from 26.4°C in 2015 to 27.5°C in 2023,
+        representing a mean ΔLST of <span class="stat-inline">+1.14°C</span> over
+        the eight-year period. The spatial distribution of warming is markedly
+        heterogeneous: the highest ΔLST values are concentrated in inner-south and
+        inner-east London, with a secondary zone of warming visible along the
+        Thames corridor.
+      </p>
+
+      <figure class="paper-figure">
+        <img src="../Urban Heat Analysis/outputs/figures/fig01_lst_comparison.png"
+             alt="Land Surface Temperature maps for Greater London, 2015 and 2023" />
+        <figcaption>
+          <strong>Figure 1.</strong> Land Surface Temperature (LST, °C) across Greater London
+          in summer 2015 (left) and summer 2023 (right), derived from Landsat TIRS Band 10.
+          Warmer tones indicate higher surface temperatures. Inner London consistently
+          exceeds suburban areas; intensification of the thermal core is apparent between epochs.
+        </figcaption>
+      </figure>
+
+      <figure class="paper-figure">
+        <img src="../Urban Heat Analysis/outputs/figures/fig02_delta_lst.png"
+             alt="ΔLST map showing surface temperature change across London boroughs 2015-2023" />
+        <figcaption>
+          <strong>Figure 2.</strong> Pixel-wise change in Land Surface Temperature (ΔLST, °C)
+          between 2015 and 2023. Warm-toned pixels indicate positive ΔLST (surface warming);
+          the pattern reveals a concentrated zone of intensification in inner south-east
+          and east London.
+        </figcaption>
+      </figure>
+
+      <h3>4.2 Borough-Level Hotspot Analysis</h3>
+      <p>
+        Borough-level zonal statistics reveal substantial intra-urban variation in ΔLST,
+        ranging from +0.38°C (Bexley) to +1.74°C (Tower Hamlets). The five boroughs
+        exhibiting the greatest surface warming are reported in Table 2, with full
+        borough-level results presented in Table 3.
+      </p>
+
+      <figure class="paper-figure">
+        <img src="../Urban Heat Analysis/outputs/figures/fig05_hotspot_boroughs.png"
+             alt="Bar chart of top 10 London boroughs ranked by ΔLST 2015-2023" />
+        <figcaption>
+          <strong>Figure 3.</strong> Top 10 London boroughs ranked by mean ΔLST (2015–2023).
+          Tower Hamlets records the greatest increase (+1.74°C), followed by Lambeth (+1.68°C)
+          and the City of London (+1.60°C).
+        </figcaption>
+      </figure>
+
+      <div class="paper-table-wrap">
+        <table class="paper-table">
+          <caption>Table 2. Top five boroughs by mean ΔLST (2015–2023).</caption>
+          <thead>
+            <tr>
+              <th>Borough</th>
+              <th>Mean LST 2015 (°C)</th>
+              <th>Mean LST 2023 (°C)</th>
+              <th>ΔLST (°C)</th>
+              <th>ΔNDVI</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="row-highlight">
+              <td>Tower Hamlets</td><td>28.47</td><td>30.22</td><td class="delta-high">+1.74</td><td>−0.011</td>
+            </tr>
+            <tr class="row-highlight">
+              <td>Lambeth</td><td>27.85</td><td>29.53</td><td class="delta-high">+1.68</td><td>−0.013</td>
+            </tr>
+            <tr>
+              <td>City of London</td><td>28.90</td><td>30.49</td><td class="delta-high">+1.60</td><td>−0.007</td>
+            </tr>
+            <tr>
+              <td>Hammersmith &amp; Fulham</td><td>28.78</td><td>30.27</td><td class="delta-high">+1.50</td><td>−0.017</td>
+            </tr>
+            <tr>
+              <td>Richmond upon Thames</td><td>25.07</td><td>26.54</td><td>+1.47</td><td>−0.007</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>4.3 LST–NDVI Correlation</h3>
+      <p>
+        Pixel-level Pearson correlation between LST and NDVI was negative and statistically
+        significant in both years (p &lt; 0.001). The correlation strengthened from
+        r = −0.762 in 2015 to r = −0.801 in 2023, indicating that the inverse
+        relationship between vegetation density and surface temperature became more
+        pronounced over the study period.
+      </p>
+
+      <figure class="paper-figure">
+        <img src="../Urban Heat Analysis/outputs/figures/fig06_lst_ndvi_scatter.png"
+             alt="Scatter plots showing LST-NDVI correlation in 2015 and 2023" />
+        <figcaption>
+          <strong>Figure 4.</strong> Pixel-level relationship between Land Surface Temperature
+          (LST, °C) and NDVI for 2015 (left) and 2023 (right). Pearson's r strengthened
+          from −0.762 to −0.801 between epochs (p &lt; 0.001 in both cases).
+        </figcaption>
+      </figure>
+
+      <figure class="paper-figure">
+        <img src="../Urban Heat Analysis/outputs/figures/fig07_borough_delta_scatter.png"
+             alt="Borough-level scatter of ΔLST against ΔNDVI" />
+        <figcaption>
+          <strong>Figure 5.</strong> Borough-level relationship between ΔLST and ΔNDVI
+          (2015–2023). Boroughs with the greatest vegetation loss (most negative ΔNDVI)
+          tend to show the greatest surface warming, consistent with the pixel-level findings.
+        </figcaption>
+      </figure>
+
+      <h2>Discussion</h2>
+
+      <p>
+        The observed mean ΔLST of +1.14°C across Greater London between 2015 and 2023
+        is consistent with both the expected trajectory of UHI intensification in a
+        densifying European city [2] and with the broader context of anthropogenic
+        warming over this period. However, interpretation requires caution: the analysis
+        compares single cloud-free scenes per epoch rather than multi-scene composites,
+        and inter-annual meteorological variability (antecedent soil moisture conditions,
+        synoptic weather patterns, day-of-year differences) cannot be fully decoupled
+        from the structural UHI signal.
+      </p>
+      <p>
+        The spatial pattern of hotspot boroughs is consistent with established UHI
+        theory. Tower Hamlets, Lambeth, Hammersmith &amp; Fulham, and Newham are
+        characterised by high impervious surface fractions, relatively low per-capita
+        green space, and continued urban densification over the study period.
+        The City of London's elevated baseline LST (&gt;28°C in 2015, &gt;30°C in 2023)
+        reflects the thermal absorption characteristics of its high-density commercial
+        built fabric and near-zero residential green space. Richmond upon Thames presents
+        a different profile: higher baseline vegetation cover but a riverside and
+        suburban morphology that may have experienced localised land cover change or
+        development pressure during the study period.
+      </p>
+      <p>
+        The strengthening of the LST–NDVI correlation from r = −0.762 to r = −0.801
+        suggests that the cooling contribution of urban vegetation became more
+        statistically detectable as its extent declined — a finding consistent with
+        non-linear vegetation–temperature feedbacks identified in prior urban remote
+        sensing studies [7]. The implication for urban greening policy is non-trivial:
+        marginal reductions in green cover in already-sparse boroughs may produce
+        proportionally greater thermal impacts than equivalent reductions in well-vegetated areas.
+      </p>
+      <p>
+        A key cross-cutting finding is the apparent concentration of the most severe
+        warming in boroughs that rank among London's most economically deprived.
+        Tower Hamlets and Newham, both in the top five for ΔLST, are also in the
+        bottom decile of the London Index of Multiple Deprivation. Residents in these
+        areas face compounded heat risk: higher outdoor exposure through employment type,
+        lower rates of air conditioning access, and housing stock with limited thermal
+        regulation capacity. This intersection of physical heat exposure and
+        socioeconomic vulnerability is a substantive concern for climate adaptation
+        planning and demands targeted policy responses beyond generic city-wide
+        greening targets.
+      </p>
+
+      <h2>Limitations</h2>
+
+      <p>
+        Several methodological limitations should be noted. <strong>Temporal sampling:</strong>
+        single cloud-free scenes per epoch introduce sensitivity to inter-annual climate
+        variability; composite approaches averaging multiple summer acquisitions would
+        reduce this uncertainty. <strong>Sensor differences:</strong> while Landsat 8
+        and 9 TIRS instruments are nominally cross-calibrated in Collection 2 Level-2
+        products, residual inter-sensor biases at the sub-Kelvin level remain possible.
+        <strong>Emissivity model:</strong> the NDVI-based emissivity scheme is a
+        first-order approximation; urban surfaces (glass, metal, artificial turf, standing
+        water) exhibit emissivities that diverge from the soil–vegetation model, potentially
+        introducing localised errors of ±1–2°C in highly heterogeneous cores.
+        <strong>Spatial resolution:</strong> at 30 m, sub-building and street-canyon
+        thermal dynamics are unresolved; results are most appropriate at neighbourhood
+        to borough scale. <strong>Attribution:</strong> observed ΔLST reflects a
+        combination of structural land cover change and interannual climate variability;
+        formal attribution to either component would require ensemble scene compositing
+        and meteorological detrending beyond the scope of this analysis.
+      </p>
+
+      <h2>Conclusions</h2>
+
+      <p>
+        This study demonstrates that mean Land Surface Temperature across Greater London
+        increased by +1.14°C between 2015 and 2023, with spatially concentrated warming
+        in inner-south and inner-east boroughs. The five highest-ΔLST boroughs —
+        Tower Hamlets, Lambeth, City of London, Hammersmith &amp; Fulham, and
+        Richmond upon Thames — exhibited increases of +1.47 to +1.74°C over the period.
+        The strengthening of the LST–NDVI correlation (r = −0.762 to r = −0.801,
+        p &lt; 0.001) is consistent with progressive urban vegetation loss as a
+        contributory driver of surface heating.
+      </p>
+      <p>
+        The findings reinforce the utility of Landsat-derived LST as a monitoring tool
+        for intra-urban heat dynamics and highlight the equity dimension of UHI
+        intensification in London. The overlap between the city's highest-warming
+        and most economically deprived boroughs underscores the importance of
+        spatially targeted — rather than city-average — approaches to urban
+        heat adaptation policy.
+      </p>
+
+      <h2>References</h2>
+      <ol class="references-list">
+        <li>Oke, T. R. (1982). The energetic basis of the urban heat island. <em>Quarterly Journal of the Royal Meteorological Society</em>, 108(455), 1–24.</li>
+        <li>Heaviside, C., Macintyre, H., &amp; Vardoulakis, S. (2017). The urban heat island: implications for health in a changing environment. <em>Current Environmental Health Reports</em>, 4(3), 296–305.</li>
+        <li>USGS. (2023). <em>Landsat Collection 2 Level-2 Science Product Guide</em>. U.S. Geological Survey. https://www.usgs.gov/landsat-missions</li>
+        <li>Foga, S., et al. (2017). Cloud detection algorithm comparison and validation for operational Landsat data products. <em>Remote Sensing of Environment</em>, 194, 379–390.</li>
+        <li>Sobrino, J. A., Jiménez-Muñoz, J. C., &amp; Paolini, L. (2004). Land surface temperature retrieval from LANDSAT TM 5. <em>Remote Sensing of Environment</em>, 90(4), 434–440.</li>
+        <li>Jiménez-Muñoz, J. C., &amp; Sobrino, J. A. (2003). A generalized single-channel method for retrieving land surface temperature from remote sensing data. <em>Journal of Geophysical Research: Atmospheres</em>, 108(D22).</li>
+        <li>Zhou, W., Huang, G., &amp; Cadenasso, M. L. (2011). Does spatial configuration matter? Understanding the effects of land cover pattern on land surface temperature in urban landscapes. <em>Landscape and Urban Planning</em>, 102(1), 54–63.</li>
+      </ol>
+
+    </div><!-- .paper-body -->
+
+    <div class="blog-cta">
+      <h3>Prefer plain language?</h3>
+      <p>
+        This work is also available as an accessible science feature written for a general audience —
+        same findings, no equations.
+      </p>
+      <div class="blog-cta-links">
+        <a href="urban-heat-london.html" class="btn-white">Read the blog version →</a>
+        <a href="https://github.com/ao-chaos/Data_portfolio" target="_blank" rel="noopener" class="btn-ghost-white">View data on GitHub →</a>
+      </div>
+    </div>
+
+  </div><!-- .paper-wrapper -->
+
+  <footer>
+    <span>© 2026 Zari Syed</span>
+    <a href="writing.html" style="color:var(--soft); transition:color 0.2s;"
+       onmouseover="this.style.color='var(--teal)'" onmouseout="this.style.color='var(--soft)'">
+      ← All writing
+    </a>
+  </footer>
+
+  <script>
+    const navbar = document.getElementById('navbar');
+    window.addEventListener('scroll', () => {
+      navbar.classList.toggle('scrolled', window.scrollY > 20);
+    });
+  </script>
+
+</body>
+</html>

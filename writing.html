@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>All Writing — Zari Syed</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ── Reset & Base ─────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:        #FAFAF8;
+      --surface:   #FFFFFF;
+      --teal:      #1C5F74;
+      --teal-light:#E8F4F8;
+      --dark:      #1A2E3B;
+      --mid:       #4A5568;
+      --soft:      #8896A4;
+      --border:    #E2E8F0;
+      --serif:     'Playfair Display', Georgia, serif;
+      --sans:      'Inter', system-ui, sans-serif;
+      --radius:    12px;
+      --shadow:    0 4px 24px rgba(28,95,116,0.10);
+      --shadow-lg: 0 8px 40px rgba(28,95,116,0.16);
+    }
+
+    html { scroll-behavior: smooth; font-size: 16px; }
+
+    body {
+      background: var(--bg);
+      color: var(--dark);
+      font-family: var(--sans);
+      font-weight: 400;
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a { color: inherit; text-decoration: none; }
+    img { display: block; max-width: 100%; }
+
+    /* ── Fade-in ──────────────────────────────────────────── */
+    .fade-in {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.55s ease, transform 0.55s ease;
+    }
+    .fade-in.visible { opacity: 1; transform: translateY(0); }
+    .fade-in.delay-1 { transition-delay: 0.08s; }
+    .fade-in.delay-2 { transition-delay: 0.16s; }
+    .fade-in.delay-3 { transition-delay: 0.24s; }
+
+    /* ── Nav ─────────────────────────────────────────────── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 5vw;
+      height: 64px;
+      background: rgba(250,250,248,0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid transparent;
+      transition: border-color 0.3s, box-shadow 0.3s;
+    }
+    nav.scrolled {
+      border-color: var(--border);
+      box-shadow: 0 2px 12px rgba(28,95,116,0.07);
+    }
+    .nav-name {
+      font-family: var(--serif);
+      font-size: 1.05rem;
+      font-weight: 600;
+      color: var(--dark);
+    }
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+      list-style: none;
+    }
+    .nav-links a {
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: var(--mid);
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--teal); }
+    .nav-links a.active { color: var(--teal); }
+
+    /* ── Page Header ─────────────────────────────────────── */
+    .page-header {
+      padding: 140px 5vw 56px;
+      max-width: 1100px;
+      margin: 0 auto;
+      border-bottom: 1px solid var(--border);
+    }
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.82rem;
+      font-weight: 500;
+      color: var(--soft);
+      margin-bottom: 2rem;
+      transition: color 0.2s;
+    }
+    .back-link:hover { color: var(--teal); }
+    .page-label {
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--teal);
+      margin-bottom: 0.75rem;
+    }
+    .page-title {
+      font-family: var(--serif);
+      font-size: clamp(2.2rem, 5vw, 3.6rem);
+      font-weight: 700;
+      color: var(--dark);
+      line-height: 1.15;
+      margin-bottom: 1rem;
+    }
+    .page-subtitle {
+      font-size: 1.05rem;
+      color: var(--mid);
+      max-width: 580px;
+      line-height: 1.8;
+    }
+
+    /* ── Filter Tabs ──────────────────────────────────────── */
+    .filter-bar {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 2rem 5vw 0;
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+    .filter-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.45rem 1.1rem;
+      border: 1.5px solid var(--border);
+      background: transparent;
+      border-radius: 100px;
+      font-family: var(--sans);
+      font-size: 0.82rem;
+      font-weight: 500;
+      color: var(--mid);
+      cursor: pointer;
+      transition: all 0.18s;
+    }
+    .filter-btn:hover {
+      border-color: var(--teal);
+      color: var(--teal);
+    }
+    .filter-btn.active {
+      background: var(--teal);
+      border-color: var(--teal);
+      color: #fff;
+    }
+    .filter-count {
+      font-size: 0.72rem;
+      font-weight: 600;
+      opacity: 0.75;
+    }
+
+    /* ── Article Grid ─────────────────────────────────────── */
+    .writing-container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 2.5rem 5vw 80px;
+    }
+
+    .category-section { margin-bottom: 3.5rem; }
+
+    .category-label {
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--soft);
+      padding-bottom: 1rem;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 1.5rem;
+    }
+
+    .articles-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 1.25rem;
+    }
+
+    .article-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.75rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.65rem;
+      transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease;
+      cursor: pointer;
+    }
+    .article-card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-lg);
+      border-color: var(--teal);
+    }
+    .article-card.hidden {
+      display: none;
+    }
+
+    .article-tag {
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--teal);
+    }
+    .article-pub {
+      font-size: 0.72rem;
+      color: var(--soft);
+      font-style: italic;
+      margin-top: -0.2rem;
+    }
+    .article-title {
+      font-family: var(--serif);
+      font-size: 1.05rem;
+      font-weight: 600;
+      color: var(--dark);
+      line-height: 1.4;
+    }
+    .article-excerpt {
+      font-size: 0.85rem;
+      color: var(--mid);
+      line-height: 1.65;
+      flex: 1;
+    }
+    .article-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--teal);
+      margin-top: 0.25rem;
+      transition: gap 0.18s;
+    }
+    .article-link:hover { gap: 0.65rem; }
+    .article-link .arrow { transition: transform 0.18s; }
+    .article-card:hover .arrow { transform: translateX(3px); }
+
+    /* no-results state */
+    .no-results {
+      display: none;
+      grid-column: 1 / -1;
+      text-align: center;
+      padding: 3rem 0;
+      color: var(--soft);
+      font-size: 0.95rem;
+    }
+
+    /* ── Footer ──────────────────────────────────────────── */
+    footer {
+      padding: 2rem 5vw;
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.8rem;
+      color: var(--soft);
+    }
+
+    /* ── Responsive ──────────────────────────────────────── */
+    @media (max-width: 768px) {
+      nav { padding: 0 6vw; }
+      .page-header { padding: 120px 6vw 48px; }
+      .filter-bar { padding: 1.5rem 6vw 0; }
+      .writing-container { padding: 2rem 6vw 64px; }
+    }
+    @media (max-width: 520px) {
+      .nav-links { display: none; }
+      .articles-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- ── Navigation ────────────────────────────────────────── -->
+  <nav id="navbar">
+    <a href="index.html" class="nav-name">Zari Syed</a>
+    <ul class="nav-links">
+      <li><a href="index.html#about">About</a></li>
+      <li><a href="writing.html" class="active">Writing</a></li>
+      <li><a href="index.html#technical">Technical</a></li>
+      <li><a href="index.html#outreach">Outreach</a></li>
+      <li><a href="index.html#contact">Contact</a></li>
+    </ul>
+  </nav>
+
+  <!-- ── Page Header ───────────────────────────────────────── -->
+  <div class="page-header">
+    <a href="index.html" class="back-link fade-in">← Back to portfolio</a>
+    <p class="page-label fade-in">All Writing</p>
+    <h1 class="page-title fade-in delay-1">12 published pieces.</h1>
+    <p class="page-subtitle fade-in delay-2">
+      Science journalism, data-driven features, peer-reviewed physics papers, and technical
+      blog posts — spanning climate science, planetary science, pop culture physics, and
+      plasma technology.
+    </p>
+  </div>
+
+  <!-- ── Filter Tabs ───────────────────────────────────────── -->
+  <div class="filter-bar fade-in">
+    <button class="filter-btn active" data-filter="all">All <span class="filter-count">12</span></button>
+    <button class="filter-btn" data-filter="science">Science Features <span class="filter-count">3</span></button>
+    <button class="filter-btn" data-filter="pop-culture">Physics &amp; Pop Culture <span class="filter-count">6</span></button>
+    <button class="filter-btn" data-filter="technical">Technical Blog <span class="filter-count">3</span></button>
+  </div>
+
+  <!-- ── Article Grid ───────────────────────────────────────── -->
+  <div class="writing-container">
+
+    <!-- ── Science Features ── -->
+    <div class="category-section" id="section-science">
+      <p class="category-label">Science Features</p>
+      <div class="articles-grid">
+
+        <a href="urban-heat-london.html" class="article-card fade-in" data-category="science">
+          <span class="article-tag">Data &amp; Climate Science</span>
+          <span class="article-pub">Data Analysis &amp; Science Writing · 2025</span>
+          <h2 class="article-title">London is Heating Up — And We Can See It From Space</h2>
+          <p class="article-excerpt">
+            Landsat satellite data shows London's mean surface temperature rose +1.14°C
+            between 2015 and 2023. The five hottest boroughs, the vegetation connection,
+            and why the pattern of heating tells an uncomfortable story about inequality.
+          </p>
+          <span class="article-link">Read article <span class="arrow">→</span></span>
+        </a>
+
+        <a href="urban-heat-london-scientific.html" class="article-card fade-in" data-category="science">
+          <span class="article-tag">Remote Sensing · Scientific Paper</span>
+          <span class="article-pub">Independent Research · 2025</span>
+          <h2 class="article-title">Spatiotemporal Analysis of Urban Heat Island Intensification in Greater London Using Multitemporal Landsat Imagery (2015–2023)</h2>
+          <p class="article-excerpt">
+            Full scientific paper with abstract, methods, equations, and citations.
+            LST derived from Landsat 8/9 TIRS data; borough-level ΔLST and LST–NDVI
+            correlation analysis across all 33 London boroughs.
+          </p>
+          <span class="article-link">Read paper <span class="arrow">→</span></span>
+        </a>
+
+        <a href="articles/mars-warm-and-wet.pdf" target="_blank" rel="noopener"
+           class="article-card fade-in" data-category="science">
+          <span class="article-tag">Planetary Science</span>
+          <span class="article-pub">University of Leicester · Science Feature</span>
+          <h2 class="article-title">Mars, Warm and Wet? The Evidence for an Ancient Habitable World</h2>
+          <p class="article-excerpt">
+            A deep dive into the geological and atmospheric evidence that Mars once hosted liquid water —
+            from valley networks and lacustrine deposits to MAVEN data on atmospheric loss, mineralogy
+            from OMEGA and CRISM, and what it means for the search for life.
+          </p>
+          <span class="article-link">Read article (PDF) <span class="arrow">→</span></span>
+        </a>
+
+      </div>
+    </div>
+
+    <!-- ── Physics & Pop Culture ── -->
+    <div class="category-section" id="section-pop-culture">
+      <p class="category-label">Physics &amp; Pop Culture · Journal of Physics Special Topics, University of Leicester</p>
+      <div class="articles-grid">
+
+        <a href="articles/gwen-stacy-physics.pdf" target="_blank" rel="noopener"
+           class="article-card fade-in" data-category="pop-culture">
+          <span class="article-tag">Mechanics</span>
+          <span class="article-pub">Journal of Physics Special Topics · 2021</span>
+          <h2 class="article-title">Gwen Stacy's Death — Physics or Just Storytelling?</h2>
+          <p class="article-excerpt">
+            Calculating whether Spider-Man's web could have saved Gwen Stacy. Using Young's modulus
+            (294 MPa), web stretch of 16.7 m, and impact deceleration forces — the physics says she
+            could have survived.
+          </p>
+          <span class="article-link">Read article (PDF) <span class="arrow">→</span></span>
+        </a>
+
+        <a href="articles/tea-windermere.pdf" target="_blank" rel="noopener"
+           class="article-card fade-in" data-category="pop-culture">
+          <span class="article-tag">Thermodynamics</span>
+          <span class="article-pub">Journal of Physics Special Topics · 2021</span>
+          <h2 class="article-title">The True Cost of Brewing Tea in Lake Windermere</h2>
+          <p class="article-excerpt">
+            Heating Lake Windermere to brewing temperature would cost between £14 and £34 billion
+            and require 65% of the world's annual tea production. Solar heating with loose-leaf tea
+            is the cheapest option.
+          </p>
+          <span class="article-link">Read article (PDF) <span class="arrow">→</span></span>
+        </a>
+
+        <a href="articles/nightclub-energy.pdf" target="_blank" rel="noopener"
+           class="article-card fade-in" data-category="pop-culture">
+          <span class="article-tag">Energy &amp; Sustainability</span>
+          <span class="article-pub">Journal of Physics Special Topics · 2021</span>
+          <h2 class="article-title">Nightclub Energy — Could 1,600 Students Power a Venue?</h2>
+          <p class="article-excerpt">
+            A real nightclub, 1,600 dancers, and 4.19 GJ of metabolic heat. The usable 1.257 GJ
+            would cover the venue's full electrical systems — renewable energy, one crowd at a time.
+          </p>
+          <span class="article-link">Read article (PDF) <span class="arrow">→</span></span>
+        </a>
+
+        <a href="articles/pirelli-plight.pdf" target="_blank" rel="noopener"
+           class="article-card fade-in" data-category="pop-culture">
+          <span class="article-tag">Tribology &amp; Motorsport</span>
+          <span class="article-pub">Journal of Physics Special Topics · 2021</span>
+          <h2 class="article-title">Pirelli's Plight — How Long Can an F1 Tyre Actually Last?</h2>
+          <p class="article-excerpt">
+            Applying the Archard wear equation to Formula 1 tyre burnout: the physics predicts
+            a tyre failure time of 30.3 seconds — uncomfortably close to real pit stop intervals.
+          </p>
+          <span class="article-link">Read article (PDF) <span class="arrow">→</span></span>
+        </a>
+
+        <a href="articles/chicken-run-aerodynamics.pdf" target="_blank" rel="noopener"
+           class="article-card fade-in" data-category="pop-culture">
+          <span class="article-tag">Aerodynamics</span>
+          <span class="article-pub">Journal of Physics Special Topics · 2021</span>
+          <h2 class="article-title">Chickens Go In, High-Performance Aircraft Come Out</h2>
+          <p class="article-excerpt">
+            Modelling the Chicken Run escape plane using bat-wing aerodynamics: the calculated
+            thrust of 18,000 N is more than enough to get a flock of chickens airborne.
+          </p>
+          <span class="article-link">Read article (PDF) <span class="arrow">→</span></span>
+        </a>
+
+        <a href="articles/breaking-the-broom.pdf" target="_blank" rel="noopener"
+           class="article-card fade-in" data-category="pop-culture">
+          <span class="article-tag">Structural Mechanics</span>
+          <span class="article-pub">Journal of Physics Special Topics · 2021</span>
+          <h2 class="article-title">Breaking the Broom — Could the Witch from Room on the Broom Fly?</h2>
+          <p class="article-excerpt">
+            Applying the modulus of rupture to a maple broomstick: the maximum safe passenger
+            mass is 166 kg, meaning the witch, cat, dog, bird, and frog are all well within limits.
+          </p>
+          <span class="article-link">Read article (PDF) <span class="arrow">→</span></span>
+        </a>
+
+      </div>
+    </div>
+
+    <!-- ── Technical Blog ── -->
+    <div class="category-section" id="section-technical">
+      <p class="category-label">Technical Blog · Quantemol</p>
+      <div class="articles-grid">
+
+        <a href="https://quantemol.com/2024/11/01/ammonia-in-clean-energy-plasma-technologys-role-in-sustainable-hydrogen-solutions/"
+           target="_blank" rel="noopener" class="article-card fade-in" data-category="technical">
+          <span class="article-tag">Clean Energy</span>
+          <span class="article-pub">Quantemol Blog · November 2024 · Authored during role; republished under company account</span>
+          <h2 class="article-title">Ammonia in Clean Energy: Plasma Technology's Role in Sustainable Hydrogen Solutions</h2>
+          <p class="article-excerpt">
+            How plasma-driven ammonia processing could enable zero-carbon hydrogen production —
+            covering electron collision cross-sections, DEA, and the path to a decarbonised
+            energy future with ammonia as a hydrogen carrier.
+          </p>
+          <span class="article-link">Read on Quantemol <span class="arrow">→</span></span>
+        </a>
+
+        <a href="https://quantemol.com/2024/06/19/icops_2024_presentation/"
+           target="_blank" rel="noopener" class="article-card fade-in" data-category="technical">
+          <span class="article-tag">Machine Learning &amp; Plasma</span>
+          <span class="article-pub">Quantemol Blog · June 2024 · Authored during role; republished under company account</span>
+          <h2 class="article-title">Harnessing Machine Learning for Plasma Reaction Kinetics Estimation</h2>
+          <p class="article-excerpt">
+            Covering Dr. Kateryna Lemishko's ICOPS 2024 presentation: a machine learning model
+            trained on 12,500 reactions that estimates plasma rate coefficients fast enough to
+            replace costly first-principles calculations.
+          </p>
+          <span class="article-link">Read on Quantemol <span class="arrow">→</span></span>
+        </a>
+
+        <a href="https://quantemol.com/2024/07/29/understanding-dissociative-electron-attachment-in-molecules-a-glimpse-into-recent-advances/"
+           target="_blank" rel="noopener" class="article-card fade-in" data-category="technical">
+          <span class="article-tag">Atomic Physics</span>
+          <span class="article-pub">Quantemol Blog · July 2024 · Authored during role; republished under company account</span>
+          <h2 class="article-title">Understanding Dissociative Electron Attachment in Molecules</h2>
+          <p class="article-excerpt">
+            A technical summary of advances in DEA cross-section calculation using R-matrix theory
+            and QEC software — with implications for radiation damage in biological molecules,
+            including DNA strand breaks.
+          </p>
+          <span class="article-link">Read on Quantemol <span class="arrow">→</span></span>
+        </a>
+
+      </div>
+    </div>
+
+  </div><!-- .writing-container -->
+
+  <!-- ── Footer ────────────────────────────────────────────── -->
+  <footer>
+    <span>© 2026 Zari Syed</span>
+    <div style="display:flex; gap:1.5rem; flex-wrap:wrap;">
+      <a href="index.html" style="color:var(--soft); font-size:0.8rem; transition:color 0.2s;" onmouseover="this.style.color='var(--teal)'" onmouseout="this.style.color='var(--soft)'">Portfolio</a>
+      <a href="mailto:muhammadzari.syed@gmail.com" style="color:var(--soft); font-size:0.8rem; transition:color 0.2s;" onmouseover="this.style.color='var(--teal)'" onmouseout="this.style.color='var(--soft)'">Email</a>
+      <a href="https://www.linkedin.com/in/zari-syed-1160a11b5/" target="_blank" rel="noopener" style="color:var(--soft); font-size:0.8rem; transition:color 0.2s;" onmouseover="this.style.color='var(--teal)'" onmouseout="this.style.color='var(--soft)'">LinkedIn</a>
+      <a href="https://github.com/ao-chaos" target="_blank" rel="noopener" style="color:var(--soft); font-size:0.8rem; transition:color 0.2s;" onmouseover="this.style.color='var(--teal)'" onmouseout="this.style.color='var(--soft)'">GitHub</a>
+    </div>
+  </footer>
+
+  <!-- ── Scripts ───────────────────────────────────────────── -->
+  <script>
+    // Nav scroll shadow
+    const navbar = document.getElementById('navbar');
+    window.addEventListener('scroll', () => {
+      navbar.classList.toggle('scrolled', window.scrollY > 20);
+    });
+
+    // Fade-in on scroll
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.08 });
+    document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+    // Fire elements already in view immediately
+    document.querySelectorAll('.page-header .fade-in, .filter-bar').forEach((el, i) => {
+      setTimeout(() => el.classList.add('visible'), i * 100);
+    });
+
+    // Stagger card animations within each section
+    document.querySelectorAll('.articles-grid').forEach(grid => {
+      grid.querySelectorAll('.article-card').forEach((card, i) => {
+        card.style.transitionDelay = `${i * 0.07}s`;
+      });
+    });
+
+    // ── Category filter ────────────────────────────────────
+    const cards = document.querySelectorAll('.article-card');
+    const sections = {
+      science:      document.getElementById('section-science'),
+      'pop-culture':document.getElementById('section-pop-culture'),
+      technical:    document.getElementById('section-technical'),
+    };
+
+    document.querySelectorAll('.filter-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const filter = btn.dataset.filter;
+
+        // Update button state
+        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+
+        if (filter === 'all') {
+          // Show everything
+          cards.forEach(c => c.classList.remove('hidden'));
+          Object.values(sections).forEach(s => s.style.display = '');
+        } else {
+          // Show only matching cards, hide empty sections
+          cards.forEach(c => {
+            c.classList.toggle('hidden', c.dataset.category !== filter);
+          });
+          Object.entries(sections).forEach(([key, el]) => {
+            el.style.display = key === filter ? '' : 'none';
+          });
+        }
+      });
+    });
+  </script>
+
+</body>
+</html>

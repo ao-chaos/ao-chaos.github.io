@@ -1,0 +1,1268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Zari Syed — Science Communicator & Technical Writer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ── Reset & Base ─────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:        #FAFAF8;
+      --surface:   #FFFFFF;
+      --teal:      #1C5F74;
+      --teal-light:#E8F4F8;
+      --dark:      #1A2E3B;
+      --mid:       #4A5568;
+      --soft:      #8896A4;
+      --border:    #E2E8F0;
+      --card-hover:#F0F7FA;
+      --serif:     'Playfair Display', Georgia, serif;
+      --sans:      'Inter', system-ui, sans-serif;
+      --radius:    12px;
+      --shadow:    0 4px 24px rgba(28,95,116,0.10);
+      --shadow-lg: 0 8px 40px rgba(28,95,116,0.16);
+    }
+
+    html { scroll-behavior: smooth; font-size: 16px; }
+
+    body {
+      background: var(--bg);
+      color: var(--dark);
+      font-family: var(--sans);
+      font-weight: 400;
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a { color: inherit; text-decoration: none; }
+    img { display: block; max-width: 100%; }
+
+    /* ── Scroll-fade animation ───────────────────────────── */
+    .fade-in {
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity 0.65s ease, transform 0.65s ease;
+    }
+    .fade-in.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .fade-in.delay-1 { transition-delay: 0.1s; }
+    .fade-in.delay-2 { transition-delay: 0.2s; }
+    .fade-in.delay-3 { transition-delay: 0.3s; }
+    .fade-in.delay-4 { transition-delay: 0.4s; }
+
+    /* ── Nav ─────────────────────────────────────────────── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 5vw;
+      height: 64px;
+      background: transparent;
+      border-bottom: 1px solid transparent;
+      transition: background 0.35s, border-color 0.35s, box-shadow 0.35s;
+    }
+    nav.scrolled {
+      background: rgba(250,250,248,0.95);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      box-shadow: 0 2px 16px rgba(28,95,116,0.10);
+    }
+    .nav-name {
+      font-family: var(--serif);
+      font-size: 1.05rem;
+      font-weight: 600;
+      color: #F5F0E8;
+      letter-spacing: 0.01em;
+      transition: color 0.35s;
+    }
+    nav.scrolled .nav-name { color: var(--dark); }
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+      list-style: none;
+    }
+    .nav-links a {
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: rgba(245,240,232,0.80);
+      transition: color 0.2s;
+    }
+    nav.scrolled .nav-links a { color: var(--mid); }
+    .nav-links a:hover { color: #4BAFCF; }
+    nav.scrolled .nav-links a:hover { color: var(--teal); }
+
+    /* ── Section wrapper ─────────────────────────────────── */
+    section {
+      padding: 96px 5vw;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+    .section-label {
+      font-family: var(--sans);
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--teal);
+      margin-bottom: 0.75rem;
+    }
+    .section-title {
+      font-family: var(--serif);
+      font-size: clamp(1.8rem, 3vw, 2.4rem);
+      font-weight: 600;
+      color: var(--dark);
+      line-height: 1.25;
+      margin-bottom: 1.25rem;
+    }
+    .section-body {
+      font-size: 1.05rem;
+      color: var(--mid);
+      max-width: 640px;
+      line-height: 1.8;
+    }
+    hr.divider {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 0 5vw;
+    }
+
+    /* ── Hero ─────────────────────────────────────────────── */
+    #hero {
+      position: relative;
+      min-height: 100vh;
+      width: 100%;
+      max-width: none;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      background-image: url('hero_background.jpg');
+      background-size: cover;
+      background-position: center;
+      z-index: 0;
+    }
+    .hero-bg::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: rgba(15, 24, 32, 0.70);
+    }
+    .hero-inner {
+      position: relative;
+      z-index: 1;
+      flex: 1;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      width: 100%;
+      padding: 140px 7vw 3rem;
+      gap: 5vw;
+      align-items: center;
+    }
+    .hero-eyebrow-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 1.75rem;
+    }
+    .hero-eyebrow-line {
+      width: 24px;
+      height: 1.5px;
+      background: #4BAFCF;
+      flex-shrink: 0;
+    }
+    .hero-eyebrow {
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      color: #4BAFCF;
+      font-weight: 500;
+      text-transform: uppercase;
+    }
+    .hero-name {
+      font-family: var(--serif);
+      font-size: clamp(3rem, 6vw, 5rem);
+      font-weight: 700;
+      color: #F5F0E8;
+      line-height: 1.0;
+      letter-spacing: -0.02em;
+      margin: 0 0 2rem;
+    }
+    .hero-ctas {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+    .hero-translating-label {
+      font-size: 11px;
+      color: #4BAFCF;
+      letter-spacing: 0.09em;
+      text-transform: uppercase;
+      margin: 0 0 1rem;
+      font-weight: 500;
+    }
+    .hero-quote-box {
+      border-left: 3px solid var(--teal);
+      padding: 0.75rem 0 0.75rem 1.25rem;
+      margin-bottom: 1.75rem;
+      min-height: 72px;
+    }
+    .hero-quote {
+      font-family: var(--serif);
+      font-size: 1.2rem;
+      color: #F5F0E8;
+      line-height: 1.5;
+      margin: 0;
+      font-style: italic;
+      transition: opacity 0.4s ease;
+    }
+    .hero-bio {
+      font-size: 0.9rem;
+      color: #8896A4;
+      line-height: 1.7;
+      margin: 0;
+    }
+    .hero-footer {
+      position: relative;
+      z-index: 1;
+      background: rgba(8, 16, 22, 0.65);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      padding: 0.7rem 5vw;
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 0;
+      border-top: 0.5px solid rgba(255,255,255,0.07);
+    }
+    .hero-footer-label {
+      font-size: 11px;
+      color: #4BAFCF;
+      font-weight: 500;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      margin-right: 1.25rem;
+    }
+    .hero-footer-pub {
+      font-size: 12px;
+      color: #8896A4;
+      margin-right: 1.25rem;
+    }
+    .hero-footer-sep {
+      font-size: 10px;
+      color: rgba(255,255,255,0.15);
+      margin-right: 1.25rem;
+    }
+    .hero-footer-tags {
+      margin-left: auto;
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .hero-topic-tag {
+      font-size: 11px;
+      background: rgba(28,95,116,0.40);
+      color: #4BAFCF;
+      padding: 3px 10px;
+      border-radius: 20px;
+    }
+    .btn-primary {
+      display: inline-block;
+      padding: 0.75rem 1.75rem;
+      background: var(--teal);
+      color: #F5F0E8;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+      transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
+    }
+    .btn-primary:hover {
+      background: #155068;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(28,95,116,0.35);
+    }
+    .btn-secondary {
+      display: inline-block;
+      padding: 0.75rem 1.75rem;
+      border: 1.5px solid rgba(255,255,255,0.22);
+      color: #B0C4CE;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      font-weight: 500;
+      transition: border-color 0.2s, color 0.2s, transform 0.2s;
+    }
+    .btn-secondary:hover {
+      border-color: #4BAFCF;
+      color: #4BAFCF;
+      transform: translateY(-2px);
+    }
+    @media (max-width: 700px) {
+      .hero-inner {
+        grid-template-columns: 1fr;
+        padding-top: 110px;
+        gap: 2.5rem;
+      }
+      .hero-footer-tags { display: none; }
+    }
+
+    /* ── About ───────────────────────────────────────────── */
+    #about {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 5rem;
+      align-items: start;
+    }
+    .about-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-top: 1.75rem;
+    }
+    .tag {
+      display: inline-block;
+      padding: 0.35rem 0.9rem;
+      background: var(--teal-light);
+      color: var(--teal);
+      border-radius: 100px;
+      font-size: 0.8rem;
+      font-weight: 500;
+    }
+    .about-credentials {
+      padding-top: 0.5rem;
+    }
+    .credential-item {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 1.75rem;
+      padding-bottom: 1.75rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .credential-item:last-child {
+      border-bottom: none;
+      margin-bottom: 0;
+      padding-bottom: 0;
+    }
+    .credential-icon {
+      width: 40px;
+      height: 40px;
+      min-width: 40px;
+      background: var(--teal-light);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.1rem;
+      color: var(--teal);
+    }
+    .credential-icon svg { width: 20px; height: 20px; }
+    .credential-text strong {
+      display: block;
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--dark);
+      margin-bottom: 0.15rem;
+    }
+    .credential-text span {
+      font-size: 0.85rem;
+      color: var(--soft);
+    }
+
+    /* ── Writing ─────────────────────────────────────────── */
+    #writing { padding-top: 96px; padding-bottom: 48px; }
+    .articles-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 1.5rem;
+      margin-top: 2.5rem;
+    }
+    .article-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.75rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+      cursor: pointer;
+    }
+    .article-card:hover {
+      transform: translateY(-5px);
+      box-shadow: var(--shadow-lg);
+      border-color: var(--teal);
+    }
+    .article-tag {
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--teal);
+    }
+    .article-title {
+      font-family: var(--serif);
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: var(--dark);
+      line-height: 1.4;
+    }
+    .article-excerpt {
+      font-size: 0.875rem;
+      color: var(--mid);
+      line-height: 1.65;
+      flex: 1;
+    }
+    .article-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.83rem;
+      font-weight: 600;
+      color: var(--teal);
+      margin-top: 0.5rem;
+      transition: gap 0.2s;
+    }
+    .article-link:hover { gap: 0.7rem; }
+    .article-link .arrow { transition: transform 0.2s; }
+    .article-card:hover .arrow { transform: translateX(3px); }
+
+    /* ── Technical Writing ───────────────────────────────── */
+    #technical { padding-top: 48px; padding-bottom: 96px; }
+    .tech-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 1.25rem;
+      margin-top: 2.5rem;
+    }
+    .tech-card {
+      display: block;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.5rem;
+      transition: transform 0.25s, box-shadow 0.25s, border-color 0.25s;
+    }
+    .tech-card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow);
+      border-color: rgba(28,95,116,0.3);
+    }
+    .tech-icon {
+      width: 44px;
+      height: 44px;
+      background: var(--teal-light);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+      margin-bottom: 1rem;
+      color: var(--teal);
+    }
+    .tech-icon svg { width: 22px; height: 22px; }
+    .tech-icon-notation {
+      font-family: var(--mono);
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      color: var(--teal);
+    }
+    .tech-card h3 {
+      font-family: var(--serif);
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--dark);
+      margin-bottom: 0.5rem;
+    }
+    .tech-card p {
+      font-size: 0.85rem;
+      color: var(--mid);
+      line-height: 1.6;
+    }
+
+    /* ── Outreach ────────────────────────────────────────── */
+    #outreach {
+      background: var(--teal);
+      max-width: 100%;
+      padding: 80px 5vw;
+    }
+    .outreach-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: center;
+    }
+    #outreach .section-label { color: rgba(255,255,255,0.6); }
+    #outreach .section-title { color: #fff; }
+    #outreach .section-body { color: rgba(255,255,255,0.8); max-width: 100%; }
+    .outreach-stats {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+    }
+    .stat-box {
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: var(--radius);
+      padding: 1.5rem;
+      backdrop-filter: blur(4px);
+      transition: background 0.2s;
+    }
+    .stat-box:hover { background: rgba(255,255,255,0.18); }
+    .stat-number {
+      font-family: var(--serif);
+      font-size: 2.2rem;
+      font-weight: 700;
+      color: #fff;
+      line-height: 1.1;
+      margin-bottom: 0.3rem;
+    }
+    .stat-label {
+      font-size: 0.82rem;
+      color: rgba(255,255,255,0.7);
+      line-height: 1.4;
+    }
+
+    /* ── Contact ─────────────────────────────────────────── */
+    #contact { text-align: center; }
+    #contact .section-label,
+    #contact .section-title,
+    #contact .section-body { margin-left: auto; margin-right: auto; }
+    .contact-links {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      margin-top: 2rem;
+      flex-wrap: wrap;
+    }
+    .contact-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.75rem 1.5rem;
+      border: 1.5px solid var(--border);
+      border-radius: 8px;
+      font-size: 0.9rem;
+      font-weight: 500;
+      color: var(--mid);
+      transition: all 0.2s;
+    }
+    .contact-link:hover {
+      border-color: var(--teal);
+      color: var(--teal);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(28,95,116,0.12);
+    }
+    .contact-link-icon { font-size: 1rem; }
+
+    /* ── Currently Working On ───────────────────────────── */
+    .now-strip {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 2rem 5vw;
+    }
+    .now-card {
+      border-left: 3px solid var(--teal);
+      background: var(--teal-light);
+      border-radius: 0 var(--radius) var(--radius) 0;
+      padding: 1.5rem 1.75rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+    .now-header {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--teal);
+    }
+    @keyframes now-pulse {
+      0%, 100% { opacity: 1; transform: scale(1); box-shadow: 0 0 0 0 rgba(34,197,94,0.4); }
+      50% { opacity: 0.85; transform: scale(0.9); box-shadow: 0 0 0 5px rgba(34,197,94,0); }
+    }
+    .now-dot {
+      width: 8px;
+      height: 8px;
+      min-width: 8px;
+      background: #22c55e;
+      border-radius: 50%;
+      animation: now-pulse 2s ease-in-out infinite;
+    }
+    .now-title {
+      font-family: var(--serif);
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: var(--dark);
+      line-height: 1.35;
+    }
+    .now-desc {
+      font-size: 0.875rem;
+      color: var(--mid);
+      line-height: 1.65;
+      max-width: 680px;
+    }
+    .now-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+      margin-top: 0.15rem;
+    }
+    .now-tag {
+      display: inline-block;
+      padding: 0.25rem 0.75rem;
+      background: rgba(28,95,116,0.1);
+      color: var(--teal);
+      border-radius: 100px;
+      font-size: 0.75rem;
+      font-weight: 500;
+    }
+    .now-tag.wip {
+      background: rgba(34,197,94,0.12);
+      color: #16a34a;
+    }
+    @media (max-width: 768px) {
+      .now-strip { padding: 1.5rem 6vw; }
+    }
+
+    /* ── Footer ──────────────────────────────────────────── */
+    footer {
+      padding: 2rem 5vw;
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.8rem;
+      color: var(--soft);
+    }
+
+    /* ── Responsive ──────────────────────────────────────── */
+    @media (max-width: 768px) {
+      nav { padding: 0 6vw; }
+      .nav-links { gap: 1.25rem; }
+      section { padding: 72px 6vw; }
+      #about {
+        grid-template-columns: 1fr;
+        gap: 3rem;
+      }
+      .outreach-inner {
+        grid-template-columns: 1fr;
+        gap: 2.5rem;
+      }
+      #hero { padding: 120px 6vw 64px; }
+    }
+    @media (max-width: 520px) {
+      .hero-name { font-size: 2.8rem; }
+      .nav-links { display: none; }
+      .articles-grid { grid-template-columns: 1fr; }
+    }
+
+    /* ── Badges ──────────────────────────────────────────── */
+    .badge-row {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      flex-wrap: wrap;
+    }
+    .badge {
+      display: inline-block;
+      padding: 0.18rem 0.55rem;
+      border-radius: 4px;
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+    .badge-pdf  { background: #FEF3C7; color: #92400E; }
+    .badge-html { background: #DBEAFE; color: #1E3A8A; }
+    .badge-time { background: var(--teal-light); color: var(--teal); }
+
+    /* ── Featured article card ───────────────────────────── */
+    .article-card.featured {
+      grid-column: 1 / -1;
+      flex-direction: row;
+      align-items: center;
+      gap: 2rem;
+      padding: 2rem 2.25rem;
+      border-left: 4px solid var(--teal);
+      background: linear-gradient(to right, var(--teal-light) 0%, var(--surface) 55%);
+    }
+    .featured-body {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 0.65rem;
+    }
+    .featured-body .article-title { font-size: 1.25rem; }
+    .featured-stat-box {
+      min-width: 155px;
+      text-align: center;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.25rem 1rem;
+      flex-shrink: 0;
+    }
+    .featured-stat-num {
+      font-family: var(--serif);
+      font-size: 2.1rem;
+      font-weight: 700;
+      color: var(--teal);
+      line-height: 1;
+      margin-bottom: 0.4rem;
+    }
+    .featured-stat-label {
+      font-size: 0.7rem;
+      color: var(--soft);
+      line-height: 1.45;
+    }
+    @media (max-width: 640px) {
+      .article-card.featured { flex-direction: column; }
+      .featured-stat-box { min-width: 100%; }
+    }
+
+    /* ── Hamburger + mobile nav ──────────────────────────── */
+    .nav-hamburger {
+      display: none;
+      flex-direction: column;
+      justify-content: center;
+      gap: 5px;
+      width: 36px;
+      height: 36px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 4px;
+      border-radius: 6px;
+      transition: background 0.2s;
+    }
+    .nav-hamburger:hover { background: var(--teal-light); }
+    .nav-hamburger span {
+      display: block;
+      width: 22px;
+      height: 2px;
+      background: #F5F0E8;
+      border-radius: 2px;
+      transition: transform 0.25s ease, opacity 0.2s, background 0.35s;
+    }
+    nav.scrolled .nav-hamburger span { background: var(--dark); }
+    nav.scrolled .nav-hamburger:hover { background: var(--teal-light); }
+    .nav-hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .nav-hamburger.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+    .nav-hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+    .mobile-nav {
+      display: none;
+      position: fixed;
+      top: 64px; left: 0; right: 0;
+      background: rgba(250,250,248,0.97);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      padding: 1.5rem 6vw 2rem;
+      z-index: 99;
+      flex-direction: column;
+      gap: 1.1rem;
+      box-shadow: 0 8px 24px rgba(28,95,116,0.1);
+    }
+    .mobile-nav.open { display: flex; }
+    .mobile-nav a {
+      font-size: 1.05rem;
+      font-weight: 500;
+      color: var(--dark);
+      padding: 0.4rem 0;
+      border-bottom: 1px solid var(--border);
+      transition: color 0.2s;
+    }
+    .mobile-nav a:last-child { border-bottom: none; }
+    .mobile-nav a:hover { color: var(--teal); }
+    @media (max-width: 520px) {
+      .nav-hamburger { display: flex; }
+    }
+
+    /* ── Now-strip hover ─────────────────────────────────── */
+    .now-card {
+      transition: transform 0.22s ease, box-shadow 0.22s ease;
+    }
+    .now-card:hover {
+      transform: translateY(-3px);
+      box-shadow: var(--shadow);
+    }
+
+    /* ── Footer links ────────────────────────────────────── */
+    .footer-links {
+      display: flex;
+      gap: 1.5rem;
+      align-items: center;
+    }
+    .footer-links a {
+      font-size: 0.8rem;
+      color: var(--soft);
+      transition: color 0.2s;
+    }
+    .footer-links a:hover { color: var(--teal); }
+    @media (max-width: 520px) {
+      footer { flex-direction: column; gap: 0.75rem; text-align: center; }
+      .footer-links { gap: 1rem; flex-wrap: wrap; justify-content: center; }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- ── Navigation ──────────────────────────────────────── -->
+  <nav id="navbar">
+    <span class="nav-name">Zari Syed</span>
+    <ul class="nav-links">
+      <li><a href="#about">About</a></li>
+      <li><a href="writing.html">Writing</a></li>
+      <li><a href="#technical">Technical</a></li>
+      <li><a href="#outreach">Outreach</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+    <button class="nav-hamburger" id="navHamburger" aria-label="Open menu">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+
+  <div class="mobile-nav" id="mobileNav">
+    <a href="#about" class="mobile-nav-link">About</a>
+    <a href="writing.html" class="mobile-nav-link">Writing</a>
+    <a href="#technical" class="mobile-nav-link">Technical</a>
+    <a href="#outreach" class="mobile-nav-link">Outreach</a>
+    <a href="#contact" class="mobile-nav-link">Contact</a>
+  </div>
+
+  <!-- ── Hero ────────────────────────────────────────────── -->
+  <section id="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-inner">
+      <div class="hero-left fade-in">
+        <div class="hero-eyebrow-row">
+          <div class="hero-eyebrow-line"></div>
+          <span class="hero-eyebrow">Science Communicator &amp; Technical Writer</span>
+          <div class="hero-eyebrow-line"></div>
+        </div>
+        <h1 class="hero-name">Zari<br>Syed</h1>
+        <div class="hero-ctas">
+          <a href="#writing" class="btn-primary">View my writing</a>
+          <a href="#contact" class="btn-secondary">Get in touch</a>
+        </div>
+      </div>
+      <div class="hero-right fade-in delay-2">
+        <p class="hero-translating-label">Currently translating</p>
+        <div class="hero-quote-box">
+          <p id="heroQuote" class="hero-quote">"How plasma physics is quietly making clean energy possible"</p>
+        </div>
+        <p class="hero-bio">Physics graduate making complex specialist science accessible — from plasma kinetics to Earth observation and everything in between.</p>
+      </div>
+    </div>
+    <div class="hero-footer fade-in delay-3">
+      <span class="hero-footer-label">Published in</span>
+      <span class="hero-footer-pub">Scientia News</span>
+      <span class="hero-footer-sep">|</span>
+      <span class="hero-footer-pub">Quantemol Blog</span>
+      <span class="hero-footer-sep">|</span>
+      <span class="hero-footer-pub">University of Leicester</span>
+      <div class="hero-footer-tags">
+        <span class="hero-topic-tag">Plasma physics</span>
+        <span class="hero-topic-tag">Climate data</span>
+        <span class="hero-topic-tag">Space science</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Currently Working On ──────────────────────────────── -->
+  <div class="now-strip fade-in">
+    <div class="now-card">
+      <div class="now-header">
+        <span class="now-dot"></span>
+        Currently working on
+      </div>
+      <h2 class="now-title">El Niño 2026: Climate Data Analysis &amp; Science Feature</h2>
+      <p class="now-desc">
+        Combining sea surface temperature and precipitation datasets with science writing —
+        exploring the dynamics of the current El Niño cycle, its measurable fingerprints in
+        global climate data, and what it means for weather extremes and the communities
+        most exposed to its effects.
+      </p>
+      <div class="now-tags">
+        <span class="now-tag">Climate Science</span>
+        <span class="now-tag">Data Analysis</span>
+        <span class="now-tag">Science Writing</span>
+        <span class="now-tag wip">In Progress</span>
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider" />
+
+  <!-- ── About ───────────────────────────────────────────── -->
+  <section id="about">
+    <div class="fade-in">
+      <p class="section-label">About</p>
+      <h2 class="section-title">Physics meets storytelling.</h2>
+      <p class="section-body">
+        I have an MPhys in Physics from the University of Leicester, where my dissertation
+        involved analysing asteroid samples returned from the Ryugu asteroid in collaboration
+        with JAXA. That rigour — the habit of asking what the data actually says — is the
+        foundation of everything I write.
+      </p>
+      <p class="section-body" style="margin-top:1rem;">
+        I write about science clearly: for researchers, for industry, and for the public.
+        I also produce technical documentation for B2B software — having spent a year at
+        Quantemol, a plasma simulation SaaS company, communicating complex outputs to
+        semiconductor, nuclear, and university clients worldwide.
+      </p>
+      <div class="about-tags" style="margin-top:1.5rem;">
+        <span class="tag">Space &amp; Earth Observation</span>
+        <span class="tag">Plasma &amp; Materials Science</span>
+        <span class="tag">Clean Technology</span>
+        <span class="tag">Data &amp; AI</span>
+        <span class="tag">Science Policy</span>
+        <span class="tag">Technical Documentation</span>
+      </div>
+    </div>
+
+    <div class="about-credentials fade-in delay-2">
+      <div class="credential-item">
+        <div class="credential-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5-10-5z"/><path d="M6 12v5c3.53 2 8.47 2 12 0v-5"/></svg>
+        </div>
+        <div class="credential-text">
+          <strong>MPhys Physics (2:1)</strong>
+          <span>University of Leicester · Dissertation with JAXA on Ryugu asteroid samples</span>
+        </div>
+      </div>
+      <div class="credential-item">
+        <div class="credential-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+        </div>
+        <div class="credential-text">
+          <strong>Science Writer</strong>
+          <span>Scientia News · 5,000+ monthly readers · Physics &amp; space coverage</span>
+        </div>
+      </div>
+      <div class="credential-item">
+        <div class="credential-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 2a10 10 0 00-7.07 17.07M19.07 4.93A10 10 0 0122 12"/><path d="M6.34 17.66L3.51 20.49M17.66 6.34l2.83-2.83"/></svg>
+        </div>
+        <div class="credential-text">
+          <strong>ExoMars Outreach Co-Lead</strong>
+          <span>National Space Centre · 2020–21</span>
+        </div>
+      </div>
+      <div class="credential-item">
+        <div class="credential-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3h6l1 7H8L9 3z"/><path d="M8 10l-4 9h16l-4-9"/><line x1="12" y1="3" x2="12" y2="10"/></svg>
+        </div>
+        <div class="credential-text">
+          <strong>Technical Communicator</strong>
+          <span>Quantemol · Client-facing science comms for semiconductor &amp; nuclear clients</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider" />
+
+  <!-- ── Featured Writing ─────────────────────────────────── -->
+  <section id="writing">
+    <p class="section-label fade-in">Featured Writing</p>
+    <h2 class="section-title fade-in delay-1">Published work.</h2>
+    <p class="section-body fade-in delay-2">
+      Peer-reviewed papers, data journalism, and science features — applying rigorous
+      physics and satellite analysis to questions that are simultaneously trivial
+      and unexpectedly deep.
+    </p>
+
+    <div class="articles-grid">
+
+      <!-- Featured hero card -->
+      <a href="urban-heat-london.html" class="article-card featured fade-in delay-1">
+        <div class="featured-body">
+          <div class="badge-row">
+            <span class="article-tag">Data &amp; Climate Science</span>
+            <span class="badge badge-html">Article</span>
+            <span class="badge badge-time">5 min read</span>
+          </div>
+          <h3 class="article-title">London is Heating Up — And We Can See It From Space</h3>
+          <p class="article-excerpt">
+            Landsat satellite data shows London's surface temperature rose by over a degree
+            in eight years — but the heat is distributed far from equally. Tower Hamlets,
+            one of the city's most deprived boroughs, is heating fastest.
+          </p>
+          <span class="article-link">Read article <span class="arrow">→</span></span>
+        </div>
+        <div class="featured-stat-box">
+          <div class="featured-stat-num">+1.14°C</div>
+          <div class="featured-stat-label">mean surface temp. rise across Greater London, 2015–2023</div>
+        </div>
+      </a>
+
+      <a href="articles/mars-warm-and-wet.pdf" target="_blank" rel="noopener" class="article-card fade-in delay-2">
+        <div class="badge-row">
+          <span class="article-tag">Planetary Science</span>
+          <span class="badge badge-pdf">PDF</span>
+          <span class="badge badge-time">8 min read</span>
+        </div>
+        <h3 class="article-title">Mars, Warm and Wet? The Evidence for an Ancient Habitable World</h3>
+        <p class="article-excerpt">
+          From valley networks and lacustrine deposits to MAVEN atmospheric loss data — a
+          deep dive into the geological and chemical evidence that Mars once hosted liquid water.
+        </p>
+        <span class="article-link">Read article <span class="arrow">→</span></span>
+      </a>
+
+      <a href="articles/gwen-stacy-physics.pdf" target="_blank" rel="noopener" class="article-card fade-in delay-3">
+        <div class="badge-row">
+          <span class="article-tag">Physics &amp; Pop Culture</span>
+          <span class="badge badge-pdf">PDF</span>
+          <span class="badge badge-time">3 min read</span>
+        </div>
+        <h3 class="article-title">Gwen Stacy's Death — Physics or Just Storytelling?</h3>
+        <p class="article-excerpt">
+          Calculating whether Spider-Man's web could have saved Gwen Stacy, using Young's
+          modulus, impact deceleration forces, and the physics of sudden arrest.
+        </p>
+        <span class="article-link">Read article <span class="arrow">→</span></span>
+      </a>
+
+      <a href="articles/nightclub-energy.pdf" target="_blank" rel="noopener" class="article-card fade-in delay-4">
+        <div class="badge-row">
+          <span class="article-tag">Energy &amp; Sustainability</span>
+          <span class="badge badge-pdf">PDF</span>
+          <span class="badge badge-time">3 min read</span>
+        </div>
+        <h3 class="article-title">Nightclub Energy — Could 1,600 Students Power a Venue?</h3>
+        <p class="article-excerpt">
+          Applying the physics of metabolic heat generation to a real nightclub crowd:
+          4.19 GJ of thermal energy, enough to cover the venue's full electrical load.
+        </p>
+        <span class="article-link">Read article <span class="arrow">→</span></span>
+      </a>
+
+    </div>
+
+    <div class="fade-in" style="margin-top:2rem; display:flex; align-items:center; gap:1.5rem; flex-wrap:wrap;">
+      <a href="writing.html" class="btn-primary" style="display:inline-block;">View all 12 articles →</a>
+      <p style="font-size:0.85rem; color:var(--soft); margin:0;">
+        Including F1 tyre wear, Chicken Run aerodynamics, Room on the Broom structural mechanics,
+        and three Quantemol technical posts.
+      </p>
+    </div>
+  </section>
+
+  <hr class="divider" />
+
+  <!-- ── Technical Writing ────────────────────────────────── -->
+  <section id="technical">
+    <p class="section-label fade-in">Technical Writing</p>
+    <h2 class="section-title fade-in delay-1">Writing for expert audiences.</h2>
+    <p class="section-body fade-in delay-2">
+      Technical blog posts produced at <strong>Quantemol</strong> — translating plasma
+      physics research, quantum chemistry, and machine learning methods into precise,
+      specialist-audience content for researchers and engineers.
+    </p>
+
+    <div class="tech-grid">
+
+      <a href="https://quantemol.com/2024/11/01/ammonia-in-clean-energy-plasma-technologys-role-in-sustainable-hydrogen-solutions/" target="_blank" rel="noopener" class="tech-card fade-in delay-1">
+        <div class="tech-icon"><span class="tech-icon-notation">NH₃</span></div>
+        <h3>Ammonia in Clean Energy</h3>
+        <p>
+          How plasma technology could enable low-carbon ammonia synthesis and on-demand
+          hydrogen production — from electron collision cross-sections to a decarbonised
+          energy future.
+        </p>
+        <p style="font-size:0.78rem; color:var(--soft); margin-top:0.4rem; font-style:italic;">Authored during my role at Quantemol; republished under company account following departure.</p>
+        <span class="article-link" style="margin-top:0.5rem; display:inline-flex;">Read on Quantemol <span class="arrow">→</span></span>
+      </a>
+
+      <a href="https://quantemol.com/2024/06/19/icops_2024_presentation/" target="_blank" rel="noopener" class="tech-card fade-in delay-2">
+        <div class="tech-icon"><span class="tech-icon-notation">ML</span></div>
+        <h3>Machine Learning for Plasma Kinetics</h3>
+        <p>
+          Covering a groundbreaking ICOPS 2024 result: using machine learning to estimate
+          plasma reaction rate coefficients across 12,500 reactions — fast, cost-effective,
+          and competitive with first-principles methods.
+        </p>
+        <p style="font-size:0.78rem; color:var(--soft); margin-top:0.4rem; font-style:italic;">Authored during my role at Quantemol; republished under company account following departure.</p>
+        <span class="article-link" style="margin-top:0.5rem; display:inline-flex;">Read on Quantemol <span class="arrow">→</span></span>
+      </a>
+
+      <a href="https://quantemol.com/2024/07/29/understanding-dissociative-electron-attachment-in-molecules-a-glimpse-into-recent-advances/" target="_blank" rel="noopener" class="tech-card fade-in delay-3">
+        <div class="tech-icon"><span class="tech-icon-notation">e⁻</span></div>
+        <h3>Dissociative Electron Attachment</h3>
+        <p>
+          A precise technical summary of recent advances in calculating DEA cross-sections
+          using R-matrix theory — with implications for radiation damage in DNA and other
+          biological molecules.
+        </p>
+        <p style="font-size:0.78rem; color:var(--soft); margin-top:0.4rem; font-style:italic;">Authored during my role at Quantemol; republished under company account following departure.</p>
+        <span class="article-link" style="margin-top:0.5rem; display:inline-flex;">Read on Quantemol <span class="arrow">→</span></span>
+      </a>
+
+    </div>
+  </section>
+
+  <!-- ── Outreach ─────────────────────────────────────────── -->
+  <section id="outreach" style="max-width:100%; padding:80px 5vw;">
+    <div class="outreach-inner">
+      <div class="fade-in">
+        <p class="section-label">Science Outreach</p>
+        <h2 class="section-title">Taking science to the public.</h2>
+        <p class="section-body" style="margin-bottom:1.5rem;">
+          As ExoMars Outreach Co-Team Leader at the National Space Centre (2020–21), I developed
+          and delivered public engagement activities around ESA's Mars exploration programme —
+          connecting cutting-edge planetary science with curious audiences of all ages.
+        </p>
+        <p class="section-body">
+          Outreach has shaped how I write: every piece is built around the question
+          <em>"why should this person care?"</em>
+        </p>
+      </div>
+      <div class="outreach-stats fade-in delay-2">
+        <div class="stat-box">
+          <div class="stat-number">5K+</div>
+          <div class="stat-label">Monthly readers reached through Scientia News</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-number">2 yrs</div>
+          <div class="stat-label">Science communication &amp; public engagement experience</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-number">ESA</div>
+          <div class="stat-label">ExoMars mission outreach at National Space Centre</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-number">3</div>
+          <div class="stat-label">Languages: English · Italian · Urdu</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Contact ──────────────────────────────────────────── -->
+  <section id="contact">
+    <p class="section-label fade-in">Contact</p>
+    <h2 class="section-title fade-in delay-1">Let's work together.</h2>
+    <p class="section-body fade-in delay-2">
+      Available for science writing commissions, technical communication projects,
+      and editorial collaboration. Always happy to talk.
+    </p>
+    <div class="contact-links fade-in delay-3">
+      <a href="mailto:muhammadzari.syed@gmail.com" class="contact-link">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="2"/><polyline points="2,4 12,13 22,4"/></svg>
+        muhammadzari.syed@gmail.com
+      </a>
+      <a href="https://www.linkedin.com/in/zari-syed-1160a11b5/" target="_blank" rel="noopener" class="contact-link">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="3"/><path d="M7 10v7M7 7v.01M11 17v-4a2 2 0 014 0v4M11 10v7"/></svg>
+        LinkedIn
+      </a>
+      <a href="https://github.com/ao-chaos/Data_portfolio" target="_blank" rel="noopener" class="contact-link">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 00-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0020 4.77 5.07 5.07 0 0019.91 1S18.73.65 16 2.48a13.38 13.38 0 00-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 005 4.77a5.44 5.44 0 00-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 009 18.13V22"/></svg>
+        Data Portfolio
+      </a>
+    </div>
+  </section>
+
+  <!-- ── Footer ───────────────────────────────────────────── -->
+  <footer>
+    <span>© 2026 Zari Syed</span>
+    <div class="footer-links">
+      <a href="writing.html">Writing</a>
+      <a href="mailto:muhammadzari.syed@gmail.com">Email</a>
+      <a href="https://www.linkedin.com/in/zari-syed-1160a11b5/" target="_blank" rel="noopener">LinkedIn</a>
+      <a href="https://github.com/ao-chaos" target="_blank" rel="noopener">GitHub</a>
+    </div>
+  </footer>
+
+  <!-- ── Scripts ──────────────────────────────────────────── -->
+  <script>
+    // Nav scroll shadow
+    const navbar = document.getElementById('navbar');
+    window.addEventListener('scroll', () => {
+      navbar.classList.toggle('scrolled', window.scrollY > 20);
+    });
+
+    // Hamburger menu
+    const hamburger = document.getElementById('navHamburger');
+    const mobileNav = document.getElementById('mobileNav');
+    hamburger.addEventListener('click', () => {
+      hamburger.classList.toggle('open');
+      mobileNav.classList.toggle('open');
+    });
+    // Close on link click
+    mobileNav.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', () => {
+        hamburger.classList.remove('open');
+        mobileNav.classList.remove('open');
+      });
+    });
+    // Close on outside click
+    document.addEventListener('click', (e) => {
+      if (!navbar.contains(e.target) && !mobileNav.contains(e.target)) {
+        hamburger.classList.remove('open');
+        mobileNav.classList.remove('open');
+      }
+    });
+
+    // Intersection Observer — fade-in on scroll
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12 });
+
+    document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+    // Fire hero elements immediately (already in view)
+    document.querySelectorAll('#hero .fade-in').forEach((el, i) => {
+      setTimeout(() => el.classList.add('visible'), i * 120);
+    });
+
+    // Rotating hero quote
+    const heroQuotes = [
+      '"How plasma physics is quietly making clean energy possible"',
+      '"What London\'s heat data reveals about urban inequality"',
+      '"The asteroid sample that rewrote what we know about Ryugu"',
+      '"Why El Niño 2026 is different — and what the data says"',
+    ];
+    let heroQuoteIdx = 0;
+    const heroQuoteEl = document.getElementById('heroQuote');
+    if (heroQuoteEl) {
+      setInterval(() => {
+        heroQuoteEl.style.opacity = '0';
+        setTimeout(() => {
+          heroQuoteIdx = (heroQuoteIdx + 1) % heroQuotes.length;
+          heroQuoteEl.textContent = heroQuotes[heroQuoteIdx];
+          heroQuoteEl.style.opacity = '1';
+        }, 400);
+      }, 3500);
+    }
+  </script>
+
+</body>
+</html>

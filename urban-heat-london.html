@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>London is Heating Up — And We Can See It From Space — Zari Syed</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:        #FAFAF8;
+      --surface:   #FFFFFF;
+      --teal:      #1C5F74;
+      --teal-light:#E8F4F8;
+      --dark:      #1A2E3B;
+      --mid:       #4A5568;
+      --soft:      #8896A4;
+      --border:    #E2E8F0;
+      --serif:     'Playfair Display', Georgia, serif;
+      --sans:      'Inter', system-ui, sans-serif;
+      --radius:    12px;
+      --shadow:    0 4px 24px rgba(28,95,116,0.10);
+    }
+
+    html { scroll-behavior: smooth; font-size: 16px; }
+
+    body {
+      background: var(--bg);
+      color: var(--dark);
+      font-family: var(--sans);
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a { color: inherit; text-decoration: none; }
+    img { display: block; max-width: 100%; }
+
+    /* ── Nav ─────────────────────────────────────────────── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 5vw;
+      height: 64px;
+      background: rgba(250,250,248,0.90);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid transparent;
+      transition: border-color 0.3s, box-shadow 0.3s;
+    }
+    nav.scrolled { border-color: var(--border); box-shadow: 0 2px 12px rgba(28,95,116,0.07); }
+    .nav-name { font-family: var(--serif); font-size: 1.05rem; font-weight: 600; }
+    .nav-links { display: flex; gap: 2rem; list-style: none; }
+    .nav-links a { font-size: 0.875rem; font-weight: 500; color: var(--mid); transition: color 0.2s; }
+    .nav-links a:hover { color: var(--teal); }
+
+    /* ── Article layout ──────────────────────────────────── */
+    .article-wrapper {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 120px 5vw 80px;
+    }
+
+    /* ── Back link ───────────────────────────────────────── */
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.82rem;
+      font-weight: 500;
+      color: var(--soft);
+      margin-bottom: 2.5rem;
+      transition: color 0.2s;
+    }
+    .back-link:hover { color: var(--teal); }
+
+    /* ── Article header ──────────────────────────────────── */
+    .article-category {
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--teal);
+      margin-bottom: 1rem;
+    }
+    .article-headline {
+      font-family: var(--serif);
+      font-size: clamp(2rem, 5vw, 3rem);
+      font-weight: 700;
+      color: var(--dark);
+      line-height: 1.2;
+      margin-bottom: 1.25rem;
+    }
+    .article-standfirst {
+      font-size: 1.15rem;
+      color: var(--mid);
+      line-height: 1.75;
+      border-left: 3px solid var(--teal);
+      padding-left: 1.25rem;
+      margin-bottom: 2rem;
+    }
+    .article-meta {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      font-size: 0.82rem;
+      color: var(--soft);
+      padding-bottom: 2rem;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 2.5rem;
+      flex-wrap: wrap;
+    }
+    .article-meta .meta-sep { width: 3px; height: 3px; background: var(--border); border-radius: 50%; }
+
+    /* ── Article body ────────────────────────────────────── */
+    .article-body h2 {
+      font-family: var(--serif);
+      font-size: 1.45rem;
+      font-weight: 600;
+      color: var(--dark);
+      margin: 2.5rem 0 0.75rem;
+      line-height: 1.3;
+    }
+
+    .article-body p {
+      font-size: 1.05rem;
+      color: var(--mid);
+      line-height: 1.85;
+      margin-bottom: 1.25rem;
+    }
+
+    .article-body p strong { color: var(--dark); font-weight: 600; }
+
+    /* ── Pull stat ───────────────────────────────────────── */
+    .pull-stat {
+      background: var(--teal-light);
+      border-left: 4px solid var(--teal);
+      border-radius: 0 var(--radius) var(--radius) 0;
+      padding: 1.5rem 1.75rem;
+      margin: 2rem 0;
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+    }
+    .pull-stat .stat-num {
+      font-family: var(--serif);
+      font-size: 2.6rem;
+      font-weight: 700;
+      color: var(--teal);
+      line-height: 1;
+    }
+    .pull-stat .stat-label {
+      font-size: 0.9rem;
+      color: var(--mid);
+      line-height: 1.5;
+    }
+
+    /* ── Figure ──────────────────────────────────────────── */
+    .article-figure {
+      margin: 2.5rem 0;
+    }
+    .article-figure img {
+      width: 100%;
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+    }
+    .article-figure figcaption {
+      font-size: 0.8rem;
+      color: var(--soft);
+      line-height: 1.55;
+      margin-top: 0.65rem;
+      font-style: italic;
+    }
+
+    /* ── Borough table ───────────────────────────────────── */
+    .borough-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 2rem 0;
+      font-size: 0.88rem;
+    }
+    .borough-table thead th {
+      text-align: left;
+      padding: 0.6rem 0.75rem;
+      background: var(--teal);
+      color: #fff;
+      font-weight: 600;
+      font-size: 0.78rem;
+      letter-spacing: 0.04em;
+    }
+    .borough-table thead th:first-child { border-radius: var(--radius) 0 0 0; }
+    .borough-table thead th:last-child { border-radius: 0 var(--radius) 0 0; }
+    .borough-table tbody td {
+      padding: 0.6rem 0.75rem;
+      border-bottom: 1px solid var(--border);
+      color: var(--mid);
+    }
+    .borough-table tbody tr:nth-child(even) td { background: var(--teal-light); }
+    .borough-table tbody tr:hover td { background: #ddeef5; }
+    .borough-table .highlight td { color: var(--dark); font-weight: 600; }
+    .borough-table .delta-hot { color: #c53030; font-weight: 600; }
+
+    /* ── CTA box ─────────────────────────────────────────── */
+    .cta-box {
+      background: var(--dark);
+      border-radius: var(--radius);
+      padding: 2rem 2rem;
+      margin: 3rem 0;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+    .cta-box h3 {
+      font-family: var(--serif);
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: #fff;
+    }
+    .cta-box p { font-size: 0.9rem; color: rgba(255,255,255,0.7); margin: 0; }
+    .cta-box a {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      margin-top: 0.5rem;
+      padding: 0.7rem 1.5rem;
+      background: var(--teal);
+      color: #fff;
+      border-radius: 8px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      width: fit-content;
+      transition: background 0.2s, transform 0.2s;
+    }
+    .cta-box a:hover { background: #155068; transform: translateY(-2px); }
+
+    /* ── Footer ──────────────────────────────────────────── */
+    footer {
+      padding: 2rem 5vw;
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.8rem;
+      color: var(--soft);
+    }
+
+    @media (max-width: 768px) {
+      .article-wrapper { padding: 100px 6vw 64px; }
+      nav { padding: 0 6vw; }
+    }
+    @media (max-width: 520px) {
+      .nav-links { display: none; }
+    }
+  </style>
+</head>
+
+<body>
+
+  <nav id="navbar">
+    <a href="index.html" class="nav-name">Zari Syed</a>
+    <ul class="nav-links">
+      <li><a href="index.html#about">About</a></li>
+      <li><a href="writing.html">Writing</a></li>
+      <li><a href="index.html#technical">Technical</a></li>
+      <li><a href="index.html#contact">Contact</a></li>
+    </ul>
+  </nav>
+
+  <div class="article-wrapper">
+
+    <a href="writing.html" class="back-link">← All writing</a>
+
+    <div style="display:flex; align-items:center; gap:0.6rem; background:var(--teal-light); border:1px solid var(--border); border-radius:var(--radius); padding:0.75rem 1.1rem; margin-bottom:2rem; font-size:0.83rem; color:var(--mid); flex-wrap:wrap;">
+      <strong style="color:var(--dark);">Accessible version</strong> &nbsp;·&nbsp; Also available as a full scientific paper:
+      <a href="urban-heat-london-scientific.html" style="color:var(--teal); font-weight:600; display:inline-flex; align-items:center; gap:0.3rem;">Read the scientific paper →</a>
+    </div>
+
+    <p class="article-category">Data &amp; Climate Science</p>
+
+    <h1 class="article-headline">London is Heating Up — And We Can See It From Space</h1>
+
+    <p class="article-standfirst">
+      Satellite data from Landsat 8 and 9 shows that the average surface temperature across
+      Greater London rose by more than a degree Celsius between 2015 and 2023. The heat is
+      not distributed equally — and the pattern tells an uncomfortable story.
+    </p>
+
+    <div class="article-meta">
+      <span>Zari Syed</span>
+      <span class="meta-sep"></span>
+      <span>Data analysis &amp; science writing</span>
+      <span class="meta-sep"></span>
+      <span>2025</span>
+    </div>
+
+    <div class="article-body">
+
+      <p>
+        Every summer, London gets a little hotter. Not just in the way that cities
+        always feel hotter in summer — a compounding structural heat that builds year on year,
+        baked into the concrete and tarmac, held in place by the density of the built environment.
+        This is the urban heat island (UHI) effect, and for a city the size of London,
+        understanding how it is changing — and where it is most severe — is no longer
+        an academic question.
+      </p>
+
+      <p>
+        To examine how London's surface heat has changed over nearly a decade, I used
+        <strong>multitemporal Landsat satellite imagery</strong> acquired during summer
+        heatwaves in 2015 and 2023. The Landsat satellites carry thermal infrared sensors
+        that measure how much heat a surface is emitting — a quantity called
+        <em>Land Surface Temperature</em> (LST). Unlike air temperature, LST captures
+        the actual thermal behaviour of the ground beneath us: the tarmac absorbing
+        sun in Tower Hamlets, the parks holding moisture in Richmond, the reflective
+        glass towers of the City.
+      </p>
+
+      <h2>What satellites can see that thermometers can't</h2>
+
+      <p>
+        A weather station gives you one temperature reading at one location.
+        Landsat gives you a temperature for every 30-metre square across an entire city,
+        simultaneously. Two cloud-free summer scenes — one from Landsat 8 in 2015,
+        one from Landsat 9 in 2023 — were processed using atmospheric correction and
+        an emissivity model tied to vegetation cover, producing comparable LST maps
+        across Greater London's 33 boroughs.
+      </p>
+
+      <figure class="article-figure">
+        <img src="../Urban Heat Analysis/outputs/figures/fig01_lst_comparison.png"
+             alt="Side-by-side Land Surface Temperature maps of Greater London in 2015 and 2023" />
+        <figcaption>
+          Fig. 1 — Land Surface Temperature across Greater London in summer 2015 (left)
+          and summer 2023 (right), derived from Landsat thermal infrared Band 10.
+          Warmer tones indicate higher surface temperatures. The intensification of heat
+          in inner London is visible across the eight-year period.
+        </figcaption>
+      </figure>
+
+      <p>
+        The broad pattern is immediately apparent: inner London is hotter than the suburbs,
+        and 2023 is hotter than 2015 — almost everywhere. But the change map tells the
+        more important story.
+      </p>
+
+      <div class="pull-stat">
+        <span class="stat-num">+1.14°C</span>
+        <span class="stat-label">
+          Mean increase in Land Surface Temperature across Greater London between 2015 and 2023,
+          derived from Landsat satellite imagery acquired during comparable summer conditions.
+        </span>
+      </div>
+
+      <figure class="article-figure">
+        <img src="../Urban Heat Analysis/outputs/figures/fig02_delta_lst.png"
+             alt="Map showing the change in Land Surface Temperature across London boroughs between 2015 and 2023" />
+        <figcaption>
+          Fig. 2 — Change in mean Land Surface Temperature (ΔLST) across Greater London,
+          2015 to 2023. Darker red indicates the greatest increase. The pattern reveals
+          concentrated warming in inner south and east London boroughs.
+        </figcaption>
+      </figure>
+
+      <h2>The boroughs that are heating fastest</h2>
+
+      <p>
+        Averaging the temperature change across each of London's 33 boroughs reveals stark
+        variation. The five most affected boroughs saw surface temperature increases
+        of between 1.5 and 1.75°C in just eight years.
+      </p>
+
+      <figure class="article-figure">
+        <img src="../Urban Heat Analysis/outputs/figures/fig05_hotspot_boroughs.png"
+             alt="Bar chart showing the top 10 hotspot London boroughs ranked by surface temperature increase" />
+        <figcaption>
+          Fig. 3 — Top 10 London boroughs ranked by mean Land Surface Temperature increase
+          (ΔLST, 2015–2023). Tower Hamlets shows the greatest warming at +1.74°C,
+          followed closely by Lambeth, the City of London, Hammersmith &amp; Fulham,
+          and Richmond upon Thames.
+        </figcaption>
+      </figure>
+
+      <table class="borough-table">
+        <thead>
+          <tr>
+            <th>Borough</th>
+            <th>LST 2015 (°C)</th>
+            <th>LST 2023 (°C)</th>
+            <th>Increase (ΔLST)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="highlight">
+            <td>Tower Hamlets</td><td>28.5</td><td>30.2</td><td class="delta-hot">+1.74°C</td>
+          </tr>
+          <tr class="highlight">
+            <td>Lambeth</td><td>27.9</td><td>29.5</td><td class="delta-hot">+1.68°C</td>
+          </tr>
+          <tr>
+            <td>City of London</td><td>28.9</td><td>30.5</td><td class="delta-hot">+1.60°C</td>
+          </tr>
+          <tr>
+            <td>Hammersmith &amp; Fulham</td><td>28.8</td><td>30.3</td><td class="delta-hot">+1.50°C</td>
+          </tr>
+          <tr>
+            <td>Richmond upon Thames</td><td>25.1</td><td>26.5</td><td>+1.47°C</td>
+          </tr>
+          <tr>
+            <td>Newham</td><td>28.7</td><td>30.1</td><td>+1.40°C</td>
+          </tr>
+          <tr>
+            <td>Kensington &amp; Chelsea</td><td>28.6</td><td>30.0</td><td>+1.43°C</td>
+          </tr>
+          <tr>
+            <td>Barking &amp; Dagenham</td><td>25.0</td><td>26.4</td><td>+1.37°C</td>
+          </tr>
+          <tr>
+            <td>Kingston upon Thames</td><td>25.0</td><td>26.4</td><td>+1.34°C</td>
+          </tr>
+          <tr>
+            <td>Waltham Forest</td><td>25.8</td><td>27.2</td><td>+1.32°C</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p>
+        Tower Hamlets sitting at the top of this list is worth pausing on.
+        It is one of the most densely populated and economically deprived boroughs in London.
+        Its residents are less likely to have air conditioning, less likely to work from home,
+        and more likely to be exposed to outdoor heat during heatwaves. A +1.74°C increase
+        in surface temperature is not the same kind of problem in Tower Hamlets as it is
+        in Hampstead or Kensington.
+      </p>
+
+      <h2>Less green, more heat</h2>
+
+      <p>
+        Surface temperature and vegetation are not independent. Plants cool the surfaces
+        around them through <em>evapotranspiration</em> — the combined process of water
+        evaporating from soil and transpiring from leaves — and by providing shade.
+        Remove the green cover, and the surfaces beneath absorb and retain more solar energy.
+      </p>
+
+      <p>
+        To quantify this, the analysis also computed the
+        <strong>Normalised Difference Vegetation Index</strong> (NDVI) for both years —
+        a satellite-derived measure of vegetation density ranging from −1 to +1. Across
+        London as a whole, NDVI declined slightly between 2015 and 2023, consistent with
+        continued urban densification and development pressure on green space.
+      </p>
+
+      <figure class="article-figure">
+        <img src="../Urban Heat Analysis/outputs/figures/fig06_lst_ndvi_scatter.png"
+             alt="Scatter plot showing the negative correlation between Land Surface Temperature and NDVI in London" />
+        <figcaption>
+          Fig. 4 — Pixel-level correlation between Land Surface Temperature and NDVI
+          in 2015 (left) and 2023 (right). The negative relationship — more vegetation,
+          lower surface temperature — strengthened from r = −0.762 to r = −0.801
+          over the eight-year period.
+        </figcaption>
+      </figure>
+
+      <p>
+        The correlation between LST and NDVI at the pixel level was already strongly
+        negative in 2015 (r = −0.762), and strengthened further by 2023 (r = −0.801).
+        In practical terms: as London's vegetation cover has thinned, the cooling
+        contribution of that vegetation has become more statistically visible —
+        because its absence is more consequential.
+      </p>
+
+      <div class="pull-stat">
+        <span class="stat-num">r = −0.801</span>
+        <span class="stat-label">
+          Pearson correlation between Land Surface Temperature and vegetation index (NDVI) in 2023,
+          up from r = −0.762 in 2015. The cooling effect of green cover is becoming more pronounced
+          as its loss accelerates.
+        </span>
+      </div>
+
+      <h2>What this means</h2>
+
+      <p>
+        A mean increase of +1.14°C in surface temperature over eight years is not a fluctuation.
+        It is a direction. And it compounds: hotter surfaces mean more heat radiated back into
+        the air at night, raising overnight temperatures in a way that offers less recovery
+        time between heatwave days. During the 2022 UK heatwave — the hottest on record,
+        with temperatures exceeding 40°C — London's ambulance services declared a major incident.
+        Public Health England linked the event to more than 2,800 excess deaths.
+      </p>
+
+      <p>
+        The data here does not capture air temperature, mortality, or lived experience.
+        What it does capture is the structural heat accumulating in London's built fabric —
+        in the tarmac and concrete of its densest, most economically exposed boroughs.
+        The satellite view is not the whole picture. But it is a picture that thermometers
+        on rooftops cannot provide.
+      </p>
+
+      <p>
+        The relationship between vegetation loss and surface heating points to one obvious
+        lever: protecting and expanding urban green space. London has its parks, its green
+        belt, its street trees. But the boroughs heating fastest are those where development
+        pressure is highest and green space per capita is already lowest. Greening Tower
+        Hamlets and Lambeth is harder than greening Richmond.
+      </p>
+
+      <p>
+        Which is, perhaps, why it matters more.
+      </p>
+
+    </div><!-- .article-body -->
+
+    <div class="cta-box">
+      <h3>See the full data analysis</h3>
+      <p>
+        All code, methodology, processed outputs, and reproducible notebooks are available
+        on GitHub — including the LST derivation pipeline, borough-level aggregation,
+        and all seven figures.
+      </p>
+      <a href="https://github.com/ao-chaos/Data_portfolio" target="_blank" rel="noopener">
+        View on GitHub →
+      </a>
+    </div>
+
+  </div><!-- .article-wrapper -->
+
+  <footer>
+    <span>© 2026 Zari Syed</span>
+    <a href="writing.html" style="color:var(--soft); transition:color 0.2s;"
+       onmouseover="this.style.color='var(--teal)'" onmouseout="this.style.color='var(--soft)'">
+      ← All writing
+    </a>
+  </footer>
+
+  <script>
+    const navbar = document.getElementById('navbar');
+    window.addEventListener('scroll', () => {
+      navbar.classList.toggle('scrolled', window.scrollY > 20);
+    });
+  </script>
+
+</body>
+</html>

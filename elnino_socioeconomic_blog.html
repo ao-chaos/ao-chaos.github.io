@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>El Niño 2026 Is Coming for Your Food, Your Water, and Your Wallet — Zari Syed</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:         #FAFAF8;
+      --surface:    #FFFFFF;
+      --teal:       #1C5F74;
+      --teal-light: #E8F4F8;
+      --teal-mid:   #4BAFCF;
+      --dark:       #1A2E3B;
+      --mid:        #4A5568;
+      --soft:       #8896A4;
+      --border:     #E2E8F0;
+      --card-hover: #F0F7FA;
+      --serif:      'Playfair Display', Georgia, serif;
+      --sans:       'Inter', system-ui, sans-serif;
+      --radius:     12px;
+      --shadow:     0 4px 24px rgba(28,95,116,0.10);
+      --shadow-lg:  0 8px 40px rgba(28,95,116,0.16);
+    }
+
+    html { scroll-behavior: smooth; font-size: 16px; }
+
+    body {
+      background: var(--bg);
+      color: var(--dark);
+      font-family: var(--sans);
+      font-weight: 400;
+      line-height: 1.75;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a { color: inherit; text-decoration: none; }
+    img { display: block; max-width: 100%; }
+
+    /* ── Nav (matches website) ─────────────────────────── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 5vw;
+      height: 64px;
+      background: transparent;
+      border-bottom: 1px solid transparent;
+      transition: background 0.35s, border-color 0.35s, box-shadow 0.35s;
+    }
+    nav.scrolled {
+      background: rgba(250,250,248,0.95);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      box-shadow: 0 2px 16px rgba(28,95,116,0.10);
+    }
+    .nav-name {
+      font-family: var(--serif);
+      font-size: 1.05rem;
+      font-weight: 600;
+      color: #F5F0E8;
+      letter-spacing: 0.01em;
+      transition: color 0.35s;
+    }
+    nav.scrolled .nav-name { color: var(--dark); }
+    .nav-links { display: flex; gap: 2rem; list-style: none; }
+    .nav-links a {
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: rgba(245,240,232,0.80);
+      transition: color 0.2s;
+    }
+    nav.scrolled .nav-links a { color: var(--mid); }
+    .nav-links a:hover { color: var(--teal-mid); }
+    nav.scrolled .nav-links a:hover { color: var(--teal); }
+
+    /* ── Hero header ───────────────────────────────────── */
+    .article-hero {
+      position: relative;
+      width: 100%;
+      min-height: 420px;
+      display: flex;
+      align-items: flex-end;
+      overflow: hidden;
+    }
+    .article-hero-bg {
+      position: absolute;
+      inset: 0;
+      background-image: url("figures/elnino_socioeconomic_blog.jpg");
+      background-size: cover;
+      background-position: center;
+      z-index: 0;
+    }
+    .article-hero-bg::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        to bottom,
+        rgba(15, 24, 32, 0.45) 0%,
+        rgba(15, 24, 32, 0.72) 100%
+      );
+    }
+    .article-hero-content {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 120px 5vw 52px;
+    }
+    .hero-eyebrow-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 1.25rem;
+    }
+    .hero-eyebrow-line {
+      width: 20px; height: 1.5px;
+      background: var(--teal-mid);
+      flex-shrink: 0;
+    }
+    .hero-eyebrow {
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      color: var(--teal-mid);
+      font-weight: 500;
+      text-transform: uppercase;
+      font-family: var(--sans);
+    }
+    .article-hero h1 {
+      font-family: var(--serif);
+      font-size: clamp(2rem, 4.5vw, 3.2rem);
+      font-weight: 700;
+      color: #F5F0E8;
+      line-height: 1.15;
+      letter-spacing: -0.01em;
+      margin-bottom: 1rem;
+    }
+    .article-hero .subtitle {
+      font-size: 1.05rem;
+      color: rgba(245,240,232,0.78);
+      font-style: italic;
+      margin-bottom: 1.5rem;
+      max-width: 620px;
+      font-family: var(--serif);
+    }
+    .hero-byline {
+      font-size: 0.82rem;
+      color: rgba(245,240,232,0.60);
+      font-family: var(--sans);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+    .hero-tag {
+      background: rgba(28,95,116,0.45);
+      color: var(--teal-mid);
+      border-radius: 20px;
+      padding: 3px 12px;
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+    .hero-sep { color: rgba(255,255,255,0.2); }
+
+    /* ── Article body ──────────────────────────────────── */
+    .article-body {
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 56px 5vw 96px;
+    }
+
+    .article-body p {
+      font-size: 1.05rem;
+      color: var(--mid);
+      line-height: 1.85;
+      margin-bottom: 1.5em;
+    }
+
+    /* ── Section headings ──────────────────────────────── */
+    .section-label {
+      font-family: var(--sans);
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--teal);
+      margin-bottom: 0.5rem;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 56px;
+    }
+    .section-label::before {
+      content: '';
+      display: inline-block;
+      width: 16px; height: 1.5px;
+      background: var(--teal);
+    }
+    h2 {
+      font-family: var(--serif);
+      font-size: clamp(1.4rem, 2.5vw, 1.75rem);
+      font-weight: 600;
+      color: var(--dark);
+      line-height: 1.25;
+      margin-bottom: 1.25rem;
+    }
+
+    /* ── Pull quote ────────────────────────────────────── */
+    .pullquote {
+      border-left: 3px solid var(--teal);
+      background: var(--teal-light);
+      border-radius: 0 var(--radius) var(--radius) 0;
+      padding: 1.5rem 1.75rem;
+      margin: 40px 0;
+      font-family: var(--serif);
+      font-size: 1.2rem;
+      font-style: italic;
+      color: var(--teal);
+      line-height: 1.55;
+    }
+
+    /* ── Data cards ────────────────────────────────────── */
+    .data-grid {
+      display: flex;
+      gap: 1rem;
+      margin: 36px 0;
+      flex-wrap: wrap;
+    }
+    .data-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.5rem 1.25rem;
+      flex: 1;
+      min-width: 140px;
+      text-align: center;
+      box-shadow: var(--shadow);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .data-card:hover {
+      transform: translateY(-3px);
+      box-shadow: var(--shadow-lg);
+    }
+    .data-card .number {
+      font-family: var(--serif);
+      font-size: 2.1rem;
+      font-weight: 700;
+      color: var(--teal);
+      display: block;
+      line-height: 1.1;
+      margin-bottom: 0.4rem;
+    }
+    .data-card .label {
+      font-size: 0.75rem;
+      color: var(--soft);
+      line-height: 1.45;
+      font-family: var(--sans);
+    }
+
+    /* ── Info box ──────────────────────────────────────── */
+    .info-box {
+      background: var(--teal-light);
+      border-left: 3px solid var(--teal);
+      border-radius: 0 var(--radius) var(--radius) 0;
+      padding: 1.25rem 1.5rem;
+      margin: 28px 0;
+      font-size: 0.92rem;
+      line-height: 1.75;
+      color: var(--mid);
+    }
+    .info-label {
+      font-size: 0.7rem;
+      font-weight: 700;
+      color: var(--teal);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 0.5rem;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    /* ── Region cards ──────────────────────────────────── */
+    .region-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+      gap: 1rem;
+      margin: 28px 0 40px;
+    }
+    .region-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.25rem 1.25rem 1.25rem 1rem;
+      border-left: 4px solid var(--border);
+      transition: transform 0.22s, box-shadow 0.22s, border-color 0.22s;
+    }
+    .region-card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow);
+    }
+    .region-card.drought { border-left-color: #C53030; }
+    .region-card.flood   { border-left-color: var(--teal); }
+    .region-card.mixed   { border-left-color: #B7791F; }
+    .region-card .region-name {
+      font-family: var(--serif);
+      font-weight: 600;
+      font-size: 0.95rem;
+      color: var(--dark);
+      margin-bottom: 4px;
+    }
+    .region-card .region-impact {
+      font-size: 0.68rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 8px;
+    }
+    .region-card.drought .region-impact { color: #C53030; }
+    .region-card.flood   .region-impact { color: var(--teal); }
+    .region-card.mixed   .region-impact { color: #B7791F; }
+    .region-card .region-detail {
+      font-size: 0.83rem;
+      color: var(--soft);
+      line-height: 1.55;
+    }
+
+    /* ── Key takeaways ─────────────────────────────────── */
+    .takeaways {
+      border-left: 3px solid var(--teal);
+      background: var(--teal-light);
+      border-radius: 0 var(--radius) var(--radius) 0;
+      padding: 1.5rem 1.75rem;
+      margin-top: 56px;
+    }
+    .takeaways-label {
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: var(--teal);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 1rem;
+    }
+    .takeaways ul {
+      padding-left: 1.25rem;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+    }
+    .takeaways li {
+      font-size: 0.93rem;
+      color: var(--mid);
+      line-height: 1.65;
+    }
+
+    /* ── Article footer ────────────────────────────────── */
+    .article-footer-strip {
+      border-top: 1px solid var(--border);
+      padding-top: 1.5rem;
+      margin-top: 56px;
+      font-size: 0.82rem;
+      color: var(--soft);
+      line-height: 1.7;
+    }
+    .article-footer-strip strong { color: var(--mid); }
+
+    /* ── Site footer ───────────────────────────────────── */
+    footer {
+      padding: 2rem 5vw;
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.8rem;
+      color: var(--soft);
+    }
+    .footer-links { display: flex; gap: 1.5rem; align-items: center; }
+    .footer-links a { font-size: 0.8rem; color: var(--soft); transition: color 0.2s; }
+    .footer-links a:hover { color: var(--teal); }
+
+    /* ── Back link ─────────────────────────────────────── */
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.83rem;
+      font-weight: 600;
+      color: var(--teal);
+      margin-bottom: 2rem;
+      transition: gap 0.2s;
+    }
+    .back-link:hover { gap: 0.65rem; }
+
+    @media (max-width: 600px) {
+      .data-grid { flex-direction: column; }
+      .article-hero h1 { font-size: 1.9rem; }
+      nav { padding: 0 6vw; }
+      .nav-links { display: none; }
+      footer { flex-direction: column; gap: 0.75rem; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── Nav ─────────────────────────────────────────── -->
+  <nav id="navbar">
+    <a href="index.html" class="nav-name">Zari Syed</a>
+    <ul class="nav-links">
+      <li><a href="index.html#about">About</a></li>
+      <li><a href="writing.html">Writing</a></li>
+      <li><a href="index.html#technical">Technical</a></li>
+      <li><a href="index.html#outreach">Outreach</a></li>
+      <li><a href="index.html#contact">Contact</a></li>
+    </ul>
+  </nav>
+
+  <!-- ── Hero ────────────────────────────────────────── -->
+  <div class="article-hero">
+    <div class="article-hero-bg"></div>
+    <div class="article-hero-content">
+      <div class="hero-eyebrow-row">
+        <div class="hero-eyebrow-line"></div>
+        <span class="hero-eyebrow">Climate Science &nbsp;·&nbsp; Science Feature</span>
+        <div class="hero-eyebrow-line"></div>
+      </div>
+      <h1>El Niño 2026 Is Coming for Your Food, Your Water, and Your Wallet</h1>
+      <p class="subtitle">A fast-developing Pacific warming event is shaping up to rival 1997 — and the people least able to absorb the blow are in its direct path.</p>
+      <div class="hero-byline">
+        <span class="hero-tag">El Niño</span>
+        <span class="hero-tag">Food Security</span>
+        <span class="hero-tag">Economics</span>
+        <span class="hero-sep">·</span>
+        By Zari Syed &nbsp;·&nbsp; July 2026 &nbsp;·&nbsp; 8 min read
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Article body ─────────────────────────────────── -->
+  <div class="article-body">
+
+    <a href="writing.html" class="back-link">← Back to writing</a>
+
+    <p>Off the coast of northern Peru, anchovy fishers are reading an ocean that runs wrong. The water is warmer than it should be for the season, the bird flocks that typically wheel above productive upwelling zones are thinner, and the nets come up lighter. The anchovies are moving: deeper, or south toward cooler water. Peruvian fishing communities do not need a NOAA bulletin to know what this means. They have seen it before.</p>
+
+    <p>By June 2026, NOAA made the call official: El Niño is here, and it is accelerating. What began as an anomalous warming in the eastern equatorial Pacific has become a confirmed climate event with a 63% probability of reaching "very strong" intensity before the northern hemisphere winter. If that forecast holds, 2026 joins 1997 and 2015 as one of the strongest El Niños on record — events that together reshuffled rainfall across every inhabited continent, collapsed fisheries, and cost the global economy tens of billions of dollars.</p>
+
+    <div class="data-grid">
+      <div class="data-card">
+        <span class="number">63%</span>
+        <div class="label">NOAA probability of "very strong" El Niño by late 2026</div>
+      </div>
+      <div class="data-card">
+        <span class="number">−11.2</span>
+        <div class="label">Southern Oscillation Index drop in April 2026 alone</div>
+      </div>
+      <div class="data-card">
+        <span class="number">$45B</span>
+        <div class="label">Estimated global cost of the 1997–98 El Niño event</div>
+      </div>
+    </div>
+
+    <div class="section-label">The Signal</div>
+    <h2>A Fast-Moving Event</h2>
+
+    <p>The physics of El Niño are deceptively simple. Under normal Pacific conditions, trade winds blow warm surface water westward, allowing cold, nutrient-rich water to well up along South America's coast. Every two to seven years, those winds weaken. Warm water sloshes back east, the eastern Pacific warms sharply, and the atmosphere above reorganises, shifting precipitation patterns in ways that cascade around the planet.</p>
+
+    <p>The 2026 event stood out from early on for its speed. The Southern Oscillation Index dropped to -11.2 in April alone, a rate of change meteorologists describe as unusually rapid. An underwater pulse of warm water, called an oceanic Kelvin wave, propagated across the Pacific and surfaced in the eastern basin, warming the surface layer further. NOAA's most recent advisory puts the probability of the event reaching the "very strong" threshold at 63%, defined as a sea surface temperature anomaly exceeding +2°C above the long-term average in the Niño 3.4 region.</p>
+
+    <div class="info-box">
+      <div class="info-label">&#8505;&nbsp; What is the Niño 3.4 region?</div>
+      The Niño 3.4 region covers a strip of the central equatorial Pacific between 5°S and 5°N latitude, from 170°W to 120°W. Scientists monitor sea surface temperature anomalies here because this zone most closely tracks the atmospheric "teleconnections" — ripple effects through the jet stream and tropical circulation — that link Pacific Ocean warming to weather changes thousands of kilometres away. When anomalies exceed +0.5°C for five consecutive overlapping three-month periods, NOAA declares El Niño conditions.
+    </div>
+
+    <p>At the "very strong" intensity level, this is not a background climate fluctuation. The World Economic Forum, writing in early 2026, described a potential event of this magnitude as a "systemic shock": one whose effects interact with global supply chains, insurance markets, and food price systems in ways that amplify far beyond the Pacific.</p>
+
+    <div class="pullquote">"The 2026 El Niño is developing unusually fast — and may rival the strongest events ever recorded."</div>
+
+    <div class="section-label">Food</div>
+    <h2>Who Loses What: Food Security Across the Globe</h2>
+
+    <p>The first system to feel El Niño's force is almost always food. The mechanism varies by region: some places see drought that wilts crops, others see floods that wash them away, and some see both within the same growing season. The 1997-98 event cost an estimated $45 billion globally, with a substantial share attributable to disrupted agriculture.</p>
+
+    <p>Peru and Ecuador feel the shock through the ocean rather than the land. The anchovies that Peruvian fishers depend on require cold, upwelling water rich in the plankton they feed on. When El Niño suppresses that upwelling, the fish either die or migrate south. The 1997-98 event caused a near-total collapse of Peru's anchovy fishery for two consecutive seasons. Peru supplies roughly 30% of the world's fish meal — used to feed farmed fish, pigs, and poultry globally — so a domestic fisheries shock quickly becomes an international feed-price problem.</p>
+
+    <p>Across the Pacific, the threat arrives differently. El Niño brings drought to Indonesia, the Philippines, and Papua New Guinea by shifting the convection systems that normally deliver rainfall to the western Pacific. During the 2015-16 El Niño, Indonesian rice output dropped by approximately 15%, producing domestic price spikes in a country of 270 million people. East Africa draws a counterintuitive card: while the western Pacific dries out, Kenya, Tanzania, and Ethiopia typically receive above-normal rainfall, but intense and poorly-timed bursts can destroy harvests as effectively as drought. Southern Africa draws the hardest position of all — Zimbabwe, Mozambique, and Zambia sit in the drought corridor that opens under strong El Niño conditions, with maize harvests the most exposed.</p>
+
+    <div class="region-grid">
+      <div class="region-card drought">
+        <div class="region-name">Peru &amp; Ecuador</div>
+        <div class="region-impact">Warm Ocean / Fisheries</div>
+        <div class="region-detail">Anchovy upwelling fails as surface waters warm. Fishery collapse ripples into global fish meal and livestock feed prices.</div>
+      </div>
+      <div class="region-card drought">
+        <div class="region-name">Indonesia &amp; Philippines</div>
+        <div class="region-impact">Drought</div>
+        <div class="region-detail">Westward rainfall shifts drive crop stress. The 2015-16 event cut Indonesian rice output by ~15%, triggering domestic price spikes.</div>
+      </div>
+      <div class="region-card drought">
+        <div class="region-name">Southern Africa</div>
+        <div class="region-impact">Drought</div>
+        <div class="region-detail">Zimbabwe, Mozambique, and Zambia face maize shortfalls. The 2015-16 event required food aid for over 40 million people.</div>
+      </div>
+      <div class="region-card flood">
+        <div class="region-name">East Africa</div>
+        <div class="region-impact">Flooding</div>
+        <div class="region-detail">Above-normal rainfall damages crops and displaces farming communities. Intense bursts cause soil erosion and flood-related harvest loss.</div>
+      </div>
+      <div class="region-card flood">
+        <div class="region-name">Peru &amp; Ecuador Coast</div>
+        <div class="region-impact">Flooding</div>
+        <div class="region-detail">The arid coastal fringe receives intense rainfall it lacks infrastructure to manage. Rivers run far above normal volume.</div>
+      </div>
+      <div class="region-card drought">
+        <div class="region-name">Southeast Asia &amp; Pacific</div>
+        <div class="region-impact">Drought</div>
+        <div class="region-detail">Mekong Basin river flows fall; Papua New Guinea, with limited groundwater storage, faces acute freshwater stress.</div>
+      </div>
+    </div>
+
+    <div class="section-label">Water</div>
+    <h2>The Other Crisis, Running in Parallel</h2>
+
+    <p>The food problem and the water problem are the same crisis viewed from different angles. El Niño does not destroy water globally; it redistributes it, concentrating rainfall in some places while starving others. For the roughly 1.8 billion people who depend directly on seasonal monsoon rainfall for both drinking water and irrigation, a redistributed pattern carries the same practical weight as a depleted one.</p>
+
+    <p>Southeast Asia's monsoon system is particularly exposed. The convection zone that normally sits over Indonesia and the Philippines migrates east during El Niño, taking its rainfall with it. River flows in the Mekong Basin tend to fall during El Niño years, affecting drinking water supply and irrigation access for farming communities across Cambodia, Laos, Vietnam, and Thailand. The Peruvian and Ecuadorian coasts face the reverse: El Niño-driven rainfall arrives in intense, concentrated bursts along coastlines built for aridity, producing severe flooding in regions whose infrastructure was simply not designed for wet conditions.</p>
+
+    <div class="section-label">Economics</div>
+    <h2>The Price Tag, and Who Actually Pays It</h2>
+
+    <p>The economic cost of a strong El Niño is not distributed evenly, either across countries or across income groups within them. A drought that costs a large economy like Australia 0.2% of GDP in reduced agricultural output is a manageable shock absorbed by commodity markets and insurance systems. The same drought imposed on a smallholder farming household in Zimbabwe, with no insurance, no savings buffer, and no alternative income source, is not a percentage-point figure. It is a season without food.</p>
+
+    <p>The 1997-98 El Niño cost an estimated $45 billion in direct damages globally, though economists note this figure understates the long-run losses from disrupted food systems and reduced agricultural productivity in the seasons that followed. The 2015-16 event cost an estimated $18 billion across seven Pacific Island nations alone. For small island economies, where fishing and tourism account for the majority of GDP, these figures represent existential shocks rather than manageable setbacks.</p>
+
+    <div class="pullquote">"The economic hit is structurally unequal: high-income countries absorb the shock through buffers and insurance; lower-income countries absorb the loss through hunger and debt."</div>
+
+    <p>The interconnections make the picture harder to parse. A rice harvest failure in Indonesia does not stay in Indonesia: it shows up in regional food prices across the Indo-Pacific, in shipping volumes, in remittance flows from diaspora workers, and in the balance sheets of multinational commodity traders. El Niño operates at a scale that cuts across national borders and supply chains in ways that simple country-by-country damage estimates miss.</p>
+
+    <div class="section-label">Response</div>
+    <h2>The Response Window Is Still Open</h2>
+
+    <p>What separates 2026 from 1997 is, at minimum, warning time. Early warning systems have improved substantially over the past three decades. NOAA, the World Meteorological Organization, and the International Research Institute for Climate and Society now issue six-to-twelve-month advance forecasts with enough skill to support pre-emptive action: pre-positioning food aid, adjusting planting calendars toward drought-tolerant varieties, enforcing temporary fisheries management pauses to protect depleted stocks before the upwelling fails completely.</p>
+
+    <p>Whether that window is actually used depends on political will and funding, neither of which moves as fast as a Kelvin wave. For the communities most at risk, the question is concrete rather than abstract. Will governments enforce fishing moratoriums early enough to protect remaining stocks? Will compensation reach households before savings run out? Will emergency food systems activate before nutrition indicators deteriorate? Climate science can produce the forecast. It cannot produce the follow-through.</p>
+
+    <p>Off the Peruvian coast, the anchovy fishers already know the answer to the first part of that question. The ocean has already told them. What happens next depends on the response: not to the ocean, but to the forecast.</p>
+
+    <div class="takeaways">
+      <div class="takeaways-label">Key Takeaways</div>
+      <ul>
+        <li>El Niño 2026 is developing at an unusually rapid pace: the Southern Oscillation Index dropped to -11.2 in April alone, and NOAA gives a 63% probability of a "very strong" event by late 2026.</li>
+        <li>Food systems face disruption across multiple continents simultaneously: anchovy fisheries in Peru, rice yields in Southeast Asia, and maize harvests in southern Africa are all at material risk.</li>
+        <li>El Niño does not produce one type of crisis: drought and flooding occur in different regions at the same time, meaning a single emergency response framework cannot cover it.</li>
+        <li>Economic losses fall disproportionately on lower-income countries and smallholder farming communities, which lack the buffers — insurance, savings, alternative income — that absorb shocks in wealthier economies.</li>
+        <li>Six-to-twelve-month advance forecasts from NOAA and WMO provide a genuine action window. Whether governments use it to pre-position aid, adjust planting, and protect fisheries is the open question of 2026.</li>
+      </ul>
+    </div>
+
+    <div class="article-footer-strip">
+      <strong>Sources:</strong> NOAA Climate Prediction Center, El Niño Advisory June 2026; World Economic Forum (2026), "El Niño could be a systemic shock that we must prepare for"; Blue Life Hub (2026), El Niño 2026 impacts on fisheries and aquaculture; FAO historical crop yield anomaly data (1997–98, 2015–16); Down to Earth (2026); OISST v2.1 sea surface temperature anomaly data (NOAA/NCEI).<br><br>
+      Zari Syed is a climate data analyst and science writer specialising in El Niño variability and its socioeconomic impacts.
+    </div>
+
+  </div>
+
+  <!-- ── Site footer ────────────────────────────────────── -->
+  <footer>
+    <span>© 2026 Zari Syed</span>
+    <div class="footer-links">
+      <a href="writing.html">Writing</a>
+      <a href="mailto:muhammadzari.syed@gmail.com">Email</a>
+      <a href="https://www.linkedin.com/in/zari-syed-1160a11b5/" target="_blank" rel="noopener">LinkedIn</a>
+      <a href="https://github.com/ao-chaos" target="_blank" rel="noopener">GitHub</a>
+    </div>
+  </footer>
+
+  <script>
+    const navbar = document.getElementById('navbar');
+    window.addEventListener('scroll', () => {
+      navbar.classList.toggle('scrolled', window.scrollY > 20);
+    });
+  </script>
+
+</body>
+</html>

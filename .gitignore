@@ -1,0 +1,11 @@
+# Analysis output folders — not part of the website
+Urban Heat Analysis/
+Netflix Content Analysis/
+
+# Raw submission PDFs with auto-generated filenames
+ojsboss*
+1671292988047.pdf
+
+# OS files
+.DS_Store
+Thumbs.db

@@ -15,6 +15,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <script src="articles-data.js"></script>
 
   <style>
     /* ── Reset & Base ─────────────────────────────────────── */
@@ -1002,76 +1003,12 @@
       and unexpectedly deep.
     </p>
 
-    <div class="articles-grid">
-
-      <!-- Featured hero card -->
-      <a href="urban-heat-london.html" class="article-card featured fade-in delay-1">
-        <div class="featured-body">
-          <div class="badge-row">
-            <span class="article-tag">Data &amp; Climate Science</span>
-            <span class="badge badge-html">Article</span>
-            <span class="badge badge-time">5 min read</span>
-          </div>
-          <h3 class="article-title">London is Heating Up, And We Can See It From Space</h3>
-          <p class="article-excerpt">
-            Landsat satellite data shows London's surface temperature rose by over a degree
-            in eight years, but the heat is distributed far from equally. Tower Hamlets,
-            one of the city's most deprived boroughs is heating fastest.
-          </p>
-          <span class="article-link">Read article <span class="arrow">→</span></span>
-        </div>
-        <div class="featured-stat-box">
-          <div class="featured-stat-num">+1.14°C</div>
-          <div class="featured-stat-label">mean surface temp. rise across Greater London, 2015–2023</div>
-        </div>
-      </a>
-
-      <a href="articles/mars-warm-and-wet.pdf" target="_blank" rel="noopener" class="article-card fade-in delay-2">
-        <div class="badge-row">
-          <span class="article-tag">Planetary Science</span>
-          <span class="badge badge-pdf">PDF</span>
-          <span class="badge badge-time">8 min read</span>
-        </div>
-        <h3 class="article-title">Mars, Warm and Wet? The Evidence for an Ancient Habitable World</h3>
-        <p class="article-excerpt">
-          From valley networks and lacustrine deposits to MAVEN atmospheric loss data a
-          deep dive into the geological and chemical evidence that Mars once hosted liquid water.
-        </p>
-        <span class="article-link">Read article <span class="arrow">→</span></span>
-      </a>
-
-      <a href="articles/gwen-stacy-physics.pdf" target="_blank" rel="noopener" class="article-card fade-in delay-3">
-        <div class="badge-row">
-          <span class="article-tag">Physics &amp; Pop Culture</span>
-          <span class="badge badge-pdf">PDF</span>
-          <span class="badge badge-time">3 min read</span>
-        </div>
-        <h3 class="article-title">Gwen Stacy's Death: Physics or Just Storytelling?</h3>
-        <p class="article-excerpt">
-          Calculating whether Spider-Man's web could have saved Gwen Stacy, using Young's
-          modulus, impact deceleration forces, and the physics of sudden arrest.
-        </p>
-        <span class="article-link">Read article <span class="arrow">→</span></span>
-      </a>
-
-      <a href="articles/nightclub-energy.pdf" target="_blank" rel="noopener" class="article-card fade-in delay-4">
-        <div class="badge-row">
-          <span class="article-tag">Energy &amp; Sustainability</span>
-          <span class="badge badge-pdf">PDF</span>
-          <span class="badge badge-time">3 min read</span>
-        </div>
-        <h3 class="article-title">Nightclub Energy — Could 1,600 Students Power a Venue?</h3>
-        <p class="article-excerpt">
-          Applying the physics of metabolic heat generation to a real nightclub crowd:
-          4.19 GJ of thermal energy, enough to cover the venue's full electrical load.
-        </p>
-        <span class="article-link">Read article <span class="arrow">→</span></span>
-      </a>
-
+    <div class="articles-grid" id="articlesGrid">
+      <!-- Populated dynamically from articles-data.js -->
     </div>
 
     <div class="fade-in" style="margin-top:2rem; display:flex; align-items:center; gap:1.5rem; flex-wrap:wrap;">
-      <a href="writing.html" class="btn-primary" style="display:inline-block;">View all 12 articles →</a>
+      <a href="writing.html" class="btn-primary" id="viewAllBtn" style="display:inline-block;">View all articles →</a>
       <p style="font-size:0.85rem; color:var(--soft); margin:0;">
         Including F1 tyre wear, Chicken Run aerodynamics, Room on the Broom structural mechanics,
         and three Quantemol technical posts.
@@ -1250,6 +1187,66 @@
     document.querySelectorAll('#hero .fade-in').forEach((el, i) => {
       setTimeout(() => el.classList.add('visible'), i * 120);
     });
+
+    // ── Dynamic articles grid ─────────────────────────────────
+    (function renderArticles() {
+      const grid = document.getElementById('articlesGrid');
+      if (!grid || typeof ARTICLES === 'undefined') return;
+
+      // Sort newest first
+      const sorted = [...ARTICLES].sort((a, b) => new Date(b.date) - new Date(a.date));
+
+      // Update "View all N articles" button
+      const btn = document.getElementById('viewAllBtn');
+      if (btn) btn.textContent = `View all ${sorted.length} articles →`;
+
+      function badgeClass(type)  { return type === 'pdf' ? 'badge-pdf' : 'badge-html'; }
+      function badgeLabel(type)  { return type === 'pdf' ? 'PDF' : 'Article'; }
+      function targetAttr(type)  { return type === 'pdf' ? 'target="_blank" rel="noopener"' : ''; }
+      function escHtml(str)      { return str.replace(/"/g, '&quot;').replace(/&/g, '&amp;'); }
+
+      // Featured card (first / newest)
+      const f = sorted[0];
+      const statHtml = f.stat ? `
+        <div class="featured-stat-box">
+          <div class="featured-stat-num">${f.stat}</div>
+          <div class="featured-stat-label">${escHtml(f.statLabel || '')}</div>
+        </div>` : '';
+
+      const featuredHtml = `
+        <a href="${f.url}" ${targetAttr(f.type)} class="article-card featured fade-in delay-1">
+          <div class="featured-body">
+            <div class="badge-row">
+              <span class="article-tag">${escHtml(f.tag)}</span>
+              <span class="badge ${badgeClass(f.type)}">${badgeLabel(f.type)}</span>
+              <span class="badge badge-time">${escHtml(f.readTime)}</span>
+            </div>
+            <h3 class="article-title">${escHtml(f.title)}</h3>
+            <p class="article-excerpt">${escHtml(f.excerpt)}</p>
+            <span class="article-link">Read article <span class="arrow">→</span></span>
+          </div>
+          ${statHtml}
+        </a>`;
+
+      // Regular cards (next 3)
+      const delays = ['delay-2', 'delay-3', 'delay-4'];
+      const regularHtml = sorted.slice(1, 4).map((a, i) => `
+        <a href="${a.url}" ${targetAttr(a.type)} class="article-card fade-in ${delays[i]}">
+          <div class="badge-row">
+            <span class="article-tag">${escHtml(a.tag)}</span>
+            <span class="badge ${badgeClass(a.type)}">${badgeLabel(a.type)}</span>
+            <span class="badge badge-time">${escHtml(a.readTime)}</span>
+          </div>
+          <h3 class="article-title">${escHtml(a.title)}</h3>
+          <p class="article-excerpt">${escHtml(a.excerpt)}</p>
+          <span class="article-link">Read article <span class="arrow">→</span></span>
+        </a>`).join('');
+
+      grid.innerHTML = featuredHtml + regularHtml;
+
+      // Wire up fade-in observer for newly injected elements
+      grid.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+    })();
 
     // Rotating hero quote
     const heroQuotes = [

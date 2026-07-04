@@ -22,7 +22,7 @@
 const ARTICLES = [
   {
     date:      "2026-07-04",
-    title:     "El Niño 2026 Is Coming for Your Food, Your Water, and Your Wallet",
+    title:     "The Coming Disruption: What El Niño 2026 Means for Food, Water, and Economies",
     excerpt:   "A fast-developing Pacific warming event is shaping up to rival 1997 — and the people least able to absorb the blow are in its direct path. From Peruvian anchovy fisheries to southern African maize harvests, the human cost is already taking shape.",
     tag:       "Climate Science",
     type:      "html",
